@@ -157,7 +157,7 @@ export function scanCodeSecrets(code) {
   }
 
   // 6. High Shannon Entropy String Literals (length >= 24, entropy >= 4.3)
-  const stringLiteralRegex = /["']([A-Za-z0-9+/=_\-]{24,120})["']/g;
+  const stringLiteralRegex = /["']([-A-Za-z0-9+/=_]{24,120})["']/g;
   let strMatch;
   while ((strMatch = stringLiteralRegex.exec(code)) !== null) {
     const candidate = strMatch[1];

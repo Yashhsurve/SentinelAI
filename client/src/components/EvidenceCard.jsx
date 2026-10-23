@@ -98,7 +98,7 @@ export default function EvidenceCard({ finding, onVerifyFix = null, onApplyFix =
 
           <p style={{ color: 'var(--text-primary)', marginBottom: '8px' }}>{description}</p>
 
-          {ruleDetails && ruleDetails !== explanation && (
+          {ruleDetails && ruleDetails !== description && (
             <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '8px' }}>
               <strong>Scanner rule:</strong> {ruleDetails}
             </p>
