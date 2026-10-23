@@ -8,10 +8,11 @@ export default function EvidenceCard({
 }) {
   const [expanded, setExpanded] = useState(false);
 
+  const id = finding.evidenceId || finding.id || 'FINDING';
+  const description = finding.explanation || finding.details || finding.ruleDetails || finding.subtype || finding.type;
+
   const {
-    evidenceId,
     severity = 'HIGH',
-    explanation,
     ruleDetails,
     snippet,
     text,
@@ -42,13 +43,13 @@ export default function EvidenceCard({
         tabIndex={0}
         role="button"
         aria-expanded={expanded}
-        aria-controls={`finding-details-${evidenceId}`}
+        aria-controls={`finding-details-${id}`}
       >
-        <span className="finding-id">{evidenceId}</span>
+        <span className="finding-id">{id}</span>
         <span>
           <span className={`severity-pill ${sevLower}`}>{severity}</span>
         </span>
-        <span className="finding-what">{explanation || ruleDetails}</span>
+        <span className="finding-what">{description}</span>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'flex-end' }}>
           <span className="finding-where">{whereText}</span>
           <Icon name={expanded ? 'chevron-up' : 'chevron-down'} size={14} className="text-secondary" />
@@ -56,7 +57,7 @@ export default function EvidenceCard({
       </div>
 
       {expanded && (
-        <div id={`finding-details-${evidenceId}`} className="finding-details">
+        <div id={`finding-details-${id}`} className="finding-details">
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px', flexWrap: 'wrap', gap: '8px' }}>
             <span style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-primary)' }}>
               Details
@@ -70,7 +71,7 @@ export default function EvidenceCard({
           </div>
 
           <p style={{ color: 'var(--text-primary)', marginBottom: '8px' }}>
-            {explanation}
+            {description}
           </p>
 
           {ruleDetails && ruleDetails !== explanation && (
