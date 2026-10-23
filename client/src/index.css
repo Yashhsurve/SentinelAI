@@ -493,10 +493,21 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media (max-width: 600px) {
-  .btn:not(.btn-sm) {
+  .btn {
     min-height: 44px;
     height: 44px;
     padding: 0 16px;
+  }
+  .btn.btn-sm {
+    min-height: 44px;
+    height: 44px;
+    padding: 0 12px;
+  }
+  .textarea-field,
+  .textarea-field.code-mode,
+  input,
+  select {
+    font-size: 16px !important;
   }
 }
 
