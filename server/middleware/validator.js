@@ -24,6 +24,8 @@ export const codeAnalysisSchema = z
 
 /**
  * Express middleware generator for Zod schema validation
+ * @param {import('zod').ZodSchema} schema - Zod validation schema
+ * @returns {import('express').RequestHandler} Express request handler
  */
 export function validateBody(schema) {
   return (req, res, next) => {

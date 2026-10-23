@@ -7,7 +7,7 @@
 [![Architecture](https://img.shields.io/badge/Architecture-Autonomous%20Agentic%20Engine-8b5cf6.svg)](#)
 [![Privacy Guarantee](https://img.shields.io/badge/Privacy-Client--Side%20Zero--Knowledge%20Masking-ffb703.svg)](#)
 [![WCAG AA](https://img.shields.io/badge/Accessibility-WCAG%20AA%20Compliant-00e5a3.svg)](#)
-[![Test Suite](https://img.shields.io/badge/Tests-52%20Passing-brightgreen.svg)](#)
+[![Test Suite](https://img.shields.io/badge/Tests-60%20Passing-brightgreen.svg)](#)
 
 ---
 
@@ -31,6 +31,43 @@
 15. [Deployment to Google Cloud Run](#deployment-to-google-cloud-run)
 16. [Known Limitations](#known-limitations)
 17. [Open Source & API Disclosures](#open-source--api-disclosures)
+
+---
+
+## Project Structure
+```
+sentinel-ai/
+├── client/              # React 18 frontend (Vite, IBM Plex fonts, vanilla CSS tokens)
+│   ├── public/          # App icons, manifest, favicon, brand logo
+│   └── src/
+│       ├── components/  # Accessible UI modules (ThreatLens, CodeShield, AgentTrace, etc.)
+│       └── services/    # REST API client
+├── server/              # Express backend
+│   ├── agent/           # 5-step agentic pipeline & Google GenAI integration
+│   ├── middleware/      # Zod validation & security middleware
+│   ├── routes/          # API endpoints (/analyze-message, /analyze-code, /verify-fix)
+│   └── utils/           # In-memory LRU cache & sanitized logger
+├── shared/              # Shared pure business logic (used in browser & server)
+│   ├── detectors/       # Deterministic heuristics (URL, tactics, secrets, OWASP)
+│   ├── masking.js       # Zero-knowledge privacy masking engine
+│   ├── scoring.js       # Deterministic 0-100 risk & security scoring
+│   └── verifier.js      # Anti-hallucination ground-truth verifier
+└── tests/               # Automated test suite (60 unit, integration & edge-case tests)
+```
+
+## Scripts
+- `npm run dev`: Launch Express server and Vite frontend concurrently
+- `npm test`: Run complete Vitest automated test suite (60 tests)
+- `npm run lint`: Run ESLint checks across codebase (flat config, react-hooks)
+- `npm run lint:fix`: Automatically fix ESLint formatting and rule warnings
+- `npm run format`: Format code using Prettier
+- `npm run build`: Build production client bundle into `dist/`
+
+## Design Decisions
+1. **AI Proposes, Code Verifies:** LLMs can hallucinate; security tools cannot. AI provides explanations and proposed remediations, but deterministic algorithms compute scores and verify claims against ground truth.
+2. **Client-Side Privacy Enclave:** PII, credentials, and API keys are masked into deterministic placeholders (`[EMAIL_1]`, `[SECRET_1]`) in browser memory before network calls.
+3. **No Heavy CSS Frameworks:** Modern CSS custom properties with light/dark tokens (`:root` and `:root[data-theme="dark"]`), WCAG AA contrast (≥4.5:1), responsive layout, and zero runtime overhead.
+4. **Resilient Offline Fallback:** If `GEMINI_API_KEY` is omitted or network fails, SentinelAI seamlessly operates in Demo Mode using local deterministic reasoning.
 
 ---
 

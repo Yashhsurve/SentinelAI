@@ -1,3 +1,8 @@
+/**
+ * MaskedPreview Component
+ * Privacy protection banner showing counts of masked credentials,
+ * with collapsible preview of anonymized replacement tokens.
+ */
 import React, { useState } from 'react';
 
 export default function MaskedPreview({ maskResult }) {

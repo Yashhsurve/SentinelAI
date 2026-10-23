@@ -1,3 +1,7 @@
+/**
+ * ReportModal Component
+ * Accessible dialog for viewing, printing, and exporting incident audit reports in JSON format.
+ */
 import React, { useEffect, useRef } from 'react';
 import Icon from './Icon.jsx';
 

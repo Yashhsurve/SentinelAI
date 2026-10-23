@@ -1,3 +1,8 @@
+/**
+ * FixVerificationModal Component
+ * Side-by-side comparison modal displaying score improvement,
+ * diff lines, and remaining issues after applying suggested remediations.
+ */
 import React, { useEffect, useRef } from 'react';
 import Icon from './Icon.jsx';
 

@@ -7,6 +7,8 @@
 /**
  * Calculates Shannon entropy of a string (bits per symbol)
  * High entropy (> 4.2 bits for base64 / hex / random strings) strongly correlates with secrets.
+ * @param {string} str - Input candidate string
+ * @returns {number} Shannon entropy value in bits
  */
 export function calculateShannonEntropy(str) {
   if (!str || str.length === 0) return 0;
@@ -29,6 +31,9 @@ export function calculateShannonEntropy(str) {
 
 /**
  * Helper to determine 1-indexed line number from character offset
+ * @param {string} text - Source code text
+ * @param {number} index - Character offset
+ * @returns {number} 1-indexed line number
  */
 export function getLineNumber(text, index) {
   const lines = text.slice(0, index).split('\n');
@@ -37,6 +42,9 @@ export function getLineNumber(text, index) {
 
 /**
  * Extracts line content for snippet display
+ * @param {string} text - Source code text
+ * @param {number} lineNumber - 1-indexed line number
+ * @returns {string} Text of the specified line
  */
 export function getLineContent(text, lineNumber) {
   const lines = text.split('\n');

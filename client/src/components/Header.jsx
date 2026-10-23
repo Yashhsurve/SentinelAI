@@ -1,3 +1,8 @@
+/**
+ * Header Component
+ * Displays brand logo, application title, system health badge,
+ * session history launcher, export report button, and dark mode toggle.
+ */
 import React from 'react';
 import Icon from './Icon.jsx';
 

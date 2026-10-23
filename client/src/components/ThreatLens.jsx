@@ -1,3 +1,9 @@
+/**
+ * ThreatLens Component
+ * Investigates suspicious messages, SMS, emails, and chat payloads.
+ * Features instant client-side masking, heuristic scanners, risk scoring,
+ * highlighted red-flag phrases, actionable checklists, and defanged rewrites.
+ */
 import React, { useState, useEffect, useMemo } from 'react';
 import { maskSensitiveData } from '../../../shared/masking.js';
 import { detectUrlThreats } from '../../../shared/detectors/urlDetector.js';
@@ -259,6 +265,12 @@ export default function ThreatLens({ initialText = '', onSaveHistory = null }) {
               </button>
             </div>
           </div>
+
+          {error && (
+            <div className="card" style={{ color: 'var(--status-danger-text)', background: 'var(--status-danger-bg)', borderColor: 'var(--status-danger-border)', fontSize: '14px' }}>
+              {error}
+            </div>
+          )}
 
           {/* Privacy Masking Preview Banner */}
           <MaskedPreview maskResult={clientMask} />

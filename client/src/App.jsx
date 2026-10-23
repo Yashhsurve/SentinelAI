@@ -1,3 +1,8 @@
+/**
+ * SentinelAI Root Application Component
+ * Manages global theme, active investigation tab, sample loaders,
+ * session history, and report export modals.
+ */
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header.jsx';
 import TabNavigation from './components/TabNavigation.jsx';

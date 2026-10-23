@@ -1,3 +1,8 @@
+/**
+ * SessionHistory Component
+ * Accessible dialog displaying locally preserved analysis sessions
+ * with quick restoration and cache clearing actions.
+ */
 import React, { useEffect, useRef } from 'react';
 import Icon from './Icon.jsx';
 

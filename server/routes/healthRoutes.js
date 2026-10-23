@@ -16,7 +16,7 @@ router.get('/health', (req, res) => {
       cacheSize: agentCache.size(),
       timestamp: new Date().toISOString(),
     });
-  } catch (err) {
+  } catch {
     res.status(500).json({
       error: 'Health check failed',
       message: 'Unable to retrieve service health status.',

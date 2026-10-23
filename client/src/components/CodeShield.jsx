@@ -1,3 +1,8 @@
+/**
+ * CodeShield Component
+ * Source code security auditor scanning for exposed secrets, OWASP flaws,
+ * prompt injection vulnerabilities, and enabling automated fix verification loops.
+ */
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { maskSensitiveData } from '../../../shared/masking.js';
 import { scanCodeSecrets } from '../../../shared/detectors/codeSecretScanner.js';
@@ -266,6 +271,12 @@ export default function CodeShield({ initialCode = '', onSaveHistory = null }) {
               </button>
             </div>
           </div>
+
+          {error && (
+            <div className="card" style={{ color: 'var(--status-danger-text)', background: 'var(--status-danger-bg)', borderColor: 'var(--status-danger-border)', fontSize: '14px' }}>
+              {error}
+            </div>
+          )}
 
           {/* Client-Side Privacy Masking Preview */}
           <MaskedPreview maskResult={clientMask} />

@@ -9,7 +9,7 @@ export async function fetchHealth() {
     const res = await fetch(`${API_BASE}/health`);
     if (!res.ok) throw new Error('Health check failed');
     return await res.json();
-  } catch (err) {
+  } catch {
     return {
       status: 'offline',
       service: 'SentinelAI',

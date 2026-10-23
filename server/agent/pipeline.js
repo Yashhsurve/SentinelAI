@@ -29,6 +29,8 @@ import { logger } from '../utils/logger.js';
 
 /**
  * Executes SentinelAI Pipeline for Message Phishing / Scam Analysis (ThreatLens)
+ * @param {{ text: string, language?: string, clientMaskCounts?: Record<string, number> }} params - Pipeline execution input
+ * @returns {Promise<any>} Synthesized threat report and telemetry
  */
 export async function runMessagePipeline({ text, language = 'en', clientMaskCounts = null }) {
   const agentTrace = [];
@@ -173,8 +175,10 @@ ${envelopedData}`;
 
 /**
  * Executes SentinelAI Pipeline for Source Code Security Audit (CodeShield)
+ * @param {{ code: string, _language?: string, clientMaskCounts?: Record<string, number> }} params - Pipeline execution input
+ * @returns {Promise<any>} Synthesized code audit report and telemetry
  */
-export async function runCodePipeline({ code, language = 'en', clientMaskCounts = null }) {
+export async function runCodePipeline({ code, _language = 'en', clientMaskCounts = null }) {
   const agentTrace = [];
   const pipelineStart = Date.now();
 

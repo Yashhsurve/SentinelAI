@@ -1,3 +1,8 @@
+/**
+ * RiskGauge Component
+ * Accessible score meter displaying normalized risk or security health score (0-100),
+ * letter grade, status classification, and factor point breakdown table.
+ */
 import React from 'react';
 
 export default function RiskGauge({
@@ -57,7 +62,7 @@ export default function RiskGauge({
         <h2 className="card-title">
           {mode === 'risk' ? 'Risk assessment' : 'Security health score'}
         </h2>
-        <span className={`status-chip ${statusClass}`}>{statusLabel}</span>
+        <span className={`status-chip ${statusClass}`}>{verdict || statusLabel}</span>
       </div>
 
       {/* Accessible Compact Meter */}

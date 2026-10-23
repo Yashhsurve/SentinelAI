@@ -92,7 +92,7 @@ app.get('*', (req, res, next) => {
 });
 
 // 6. Generic Error Handling Middleware (Never leak stack traces)
-app.use((err, req, res, next) => {
+app.use((err, req, res, _next) => {
   logger.error('Unhandled server exception', err);
   const status = err.status || 500;
   res.status(status).json({

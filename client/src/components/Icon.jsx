@@ -1,3 +1,7 @@
+/**
+ * Icon Component
+ * Accessible inline SVG icons tailored for security alerts, controls, and themes.
+ */
 import React from 'react';
 
 export default function Icon({ name, size = 16, className = '', ...props }) {

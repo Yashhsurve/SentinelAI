@@ -1,3 +1,8 @@
+/**
+ * AgentTrace Component
+ * Visualizes the agent execution pipeline (DETECT -> MASK -> REASON -> VERIFY -> REPORT)
+ * with latency metrics and anti-hallucination shield indicators.
+ */
 import React from 'react';
 
 export default function AgentTrace({

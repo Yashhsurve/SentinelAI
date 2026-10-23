@@ -73,6 +73,9 @@ const SHORTENER_DOMAINS = new Set([
 
 /**
  * Calculates Levenshtein edit distance between two strings
+ * @param {string} a - First string
+ * @param {string} b - Second string
+ * @returns {number} Edit distance
  */
 export function levenshteinDistance(a, b) {
   if (a.length === 0) return b.length;
@@ -250,7 +253,6 @@ export function detectUrlThreats(text) {
     }
 
     // Check for Brand Typosquatting / Lookalike domains
-    const normalizedDomain = normalizeLeetspeak(domainWithoutTld);
     for (const brand of TARGET_BRANDS) {
       // 1. Check direct inclusion of brand with suspicious keywords (e.g., sbi-kyc-verify, paytm-wallet-update)
       const hasBrandKeyword = domainWithoutTld.includes(brand);

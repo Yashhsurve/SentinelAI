@@ -4,6 +4,10 @@ import crypto from 'crypto';
  * In-Memory LRU Cache with TTL expiry
  */
 export class LruCache {
+  /**
+   * @param {number} maxSize - Maximum entries before LRU eviction
+   * @param {number} defaultTtlMs - Default time-to-live in milliseconds
+   */
   constructor(maxSize = 500, defaultTtlMs = 10 * 60 * 1000) {
     this.maxSize = maxSize;
     this.defaultTtlMs = defaultTtlMs;
@@ -12,12 +16,19 @@ export class LruCache {
 
   /**
    * Generates a deterministic SHA-256 hash for cache keying
+   * @param {any} input - Input value or object to hash
+   * @returns {string} SHA-256 hex digest
    */
   hashKey(input) {
     const serialized = typeof input === 'string' ? input : JSON.stringify(input);
     return crypto.createHash('sha256').update(serialized).digest('hex');
   }
 
+  /**
+   * Retrieves an item from cache if present and unexpired
+   * @param {string} key - Cache lookup key
+   * @returns {any} Cached value or null
+   */
   get(key) {
     if (!this.cache.has(key)) return null;
 

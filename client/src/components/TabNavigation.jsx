@@ -1,3 +1,8 @@
+/**
+ * TabNavigation Component
+ * ARIA-accessible tablist supporting arrow-key keyboard navigation
+ * between Messages (ThreatLens) and Code (CodeShield) workspaces.
+ */
 import React, { useRef } from 'react';
 
 export default function TabNavigation({ activeTab, onSelectTab }) {

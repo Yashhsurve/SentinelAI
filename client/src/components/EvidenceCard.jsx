@@ -1,3 +1,8 @@
+/**
+ * EvidenceCard Component
+ * Displays individual verified security finding with expandable details,
+ * code snippet context, rule citations, and remediations.
+ */
 import React, { useState } from 'react';
 import Icon from './Icon.jsx';
 
