@@ -107,13 +107,13 @@ export default function FixVerificationModal({
           }}
         >
           <div>
-            <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '4px' }}>
+            <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '4px' }}>
               Original score
             </div>
             <div style={{ fontSize: '24px', fontWeight: 600, color: 'var(--status-danger-text)', fontFamily: 'var(--font-mono)' }}>
               {original.score ?? 0}
             </div>
-            <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
+            <div style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
               Grade: {original.grade} • {original.issuesCount} issue{original.issuesCount === 1 ? '' : 's'}
             </div>
           </div>
@@ -123,7 +123,7 @@ export default function FixVerificationModal({
             <span
               style={{
                 fontFamily: 'var(--font-mono)',
-                fontSize: '12px',
+                fontSize: '13px',
                 fontWeight: 600,
                 color: scoreImprovement >= 0 ? 'var(--status-success-text)' : 'var(--status-danger-text)',
               }}
@@ -133,13 +133,13 @@ export default function FixVerificationModal({
           </div>
 
           <div>
-            <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '4px' }}>
+            <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '4px' }}>
               Remediated score
             </div>
             <div style={{ fontSize: '24px', fontWeight: 600, color: 'var(--status-success-text)', fontFamily: 'var(--font-mono)' }}>
               {fixed.score ?? 100}
             </div>
-            <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
+            <div style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
               Grade: {fixed.grade} • {fixed.issuesCount} issue{fixed.issuesCount === 1 ? '' : 's'}
             </div>
           </div>
@@ -161,7 +161,7 @@ export default function FixVerificationModal({
               ? 'Verification passed: issue resolved.'
               : 'Partial remediation: other issues remain.'}
           </strong>
-          <div style={{ color: 'var(--text-secondary)', marginTop: '2px', fontSize: '12px' }}>
+          <div style={{ color: 'var(--text-secondary)', marginTop: '2px', fontSize: '13px' }}>
             {newIssuesIntroduced.length > 0
               ? `Note: ${newIssuesIntroduced.length} new issue(s) detected in the changed code.`
               : 'Zero regressions or newly introduced issues.'}

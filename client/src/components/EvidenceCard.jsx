@@ -63,8 +63,8 @@ export default function EvidenceCard({
               Details
             </span>
             {groundTruthVerified && (
-              <span style={{ fontSize: '12px', color: 'var(--status-success-text)', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                <Icon name="check" size={12} />
+              <span style={{ fontSize: '13px', color: 'var(--status-success-text)', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                <Icon name="check" size={13} />
                 <span>Verified against code scanner</span>
               </span>
             )}
@@ -75,7 +75,7 @@ export default function EvidenceCard({
           </p>
 
           {ruleDetails && ruleDetails !== explanation && (
-            <p style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '8px' }}>
+            <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '8px' }}>
               <strong>Scanner rule:</strong> {ruleDetails}
             </p>
           )}
@@ -89,7 +89,7 @@ export default function EvidenceCard({
           {suggestedFix && (
             <div style={{ marginTop: '12px', paddingTop: '10px', borderTop: '1px solid var(--border-color)' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px', flexWrap: 'wrap', gap: '8px' }}>
-                <span style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-primary)' }}>
+                <span style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
                   Suggested remediation
                 </span>
                 <div style={{ display: 'flex', gap: '8px' }}>
@@ -126,7 +126,7 @@ export default function EvidenceCard({
                   padding: '8px 12px',
                   borderRadius: 'var(--radius)',
                   fontFamily: 'var(--font-mono)',
-                  fontSize: '12px',
+                  fontSize: '13px',
                   color: 'var(--text-primary)',
                   whiteSpace: 'pre-wrap',
                   overflowX: 'auto',

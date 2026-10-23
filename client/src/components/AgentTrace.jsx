@@ -7,7 +7,7 @@ export default function AgentTrace({ agentTrace = [], unsupportedClaimsDropped =
     <div className="card" style={{ marginTop: '16px' }}>
       <div className="card-header">
         <h3 className="card-title">Agent activity</h3>
-        <span style={{ fontSize: '12px', fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)' }}>
+        <span style={{ fontSize: '13px', fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)' }}>
           Total duration: {latencyMs}ms
         </span>
       </div>

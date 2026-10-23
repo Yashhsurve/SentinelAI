@@ -23,7 +23,7 @@ export default function MaskedPreview({ maskResult }) {
             <span style={{ fontWeight: 600, color: 'var(--text-primary)', fontSize: '14px' }}>
               Privacy protection
             </span>
-            <span className="status-chip info" style={{ fontSize: '12px' }}>
+            <span className="status-chip info" style={{ fontSize: '13px' }}>
               {totalMasked === 1
                 ? '1 sensitive item was masked before analysis'
                 : `${totalMasked} sensitive items were masked before analysis`}
@@ -52,7 +52,7 @@ export default function MaskedPreview({ maskResult }) {
 
       {isOpen && (
         <div id="masked-text-preview" style={{ marginTop: '12px' }}>
-          <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '6px' }}>
+          <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '6px' }}>
             Sensitive values have been replaced with anonymous tokens in your browser:
           </p>
           <pre
@@ -62,7 +62,7 @@ export default function MaskedPreview({ maskResult }) {
               padding: '10px 12px',
               borderRadius: 'var(--radius)',
               fontFamily: 'var(--font-mono)',
-              fontSize: '12px',
+              fontSize: '13px',
               color: 'var(--text-secondary)',
               whiteSpace: 'pre-wrap',
               wordBreak: 'break-all',

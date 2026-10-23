@@ -91,29 +91,31 @@ export default function RiskGauge({
       {/* Clean Two-Column Breakdown Table */}
       {breakdown && Object.keys(breakdown).length > 0 && (
         <div style={{ marginTop: '16px' }}>
-          <div style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-secondary)', marginBottom: '4px' }}>
+          <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-secondary)', marginBottom: '4px' }}>
             Score breakdown
           </div>
-          <table className="breakdown-table" aria-label="Score factor breakdown">
-            <thead>
-              <tr>
-                <th scope="col">Factor</th>
-                <th scope="col">Points</th>
-              </tr>
-            </thead>
-            <tbody>
-              {Object.entries(breakdown).map(([key, val]) => {
-                if (val === 0) return null;
-                const label = factorLabels[key] || key;
-                return (
-                  <tr key={key}>
-                    <td>{label}</td>
-                    <td>+{val}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+          <div className="breakdown-table-container">
+            <table className="breakdown-table" aria-label="Score factor breakdown">
+              <thead>
+                <tr>
+                  <th scope="col">Factor</th>
+                  <th scope="col">Points</th>
+                </tr>
+              </thead>
+              <tbody>
+                {Object.entries(breakdown).map(([key, val]) => {
+                  if (val === 0) return null;
+                  const label = factorLabels[key] || key;
+                  return (
+                    <tr key={key}>
+                      <td>{label}</td>
+                      <td>+{val}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
     </div>
