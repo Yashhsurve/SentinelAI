@@ -3,8 +3,8 @@ import { maskSensitiveData } from '../shared/masking.js';
 import { scanCodeSecrets } from '../shared/detectors/codeSecretScanner.js';
 import { scanCodeVulnerabilities } from '../shared/detectors/codeVulnerabilityScanner.js';
 import { detectPromptInjection } from '../shared/detectors/promptInjectionDetector.js';
-import { scanUrls } from '../shared/detectors/urlScanner.js';
-import { scanPsychologicalTactics } from '../shared/detectors/psychologicalDetector.js';
+import { detectUrlThreats } from '../shared/detectors/urlDetector.js';
+import { detectManipulationTactics } from '../shared/detectors/manipulationDetector.js';
 import { calculateMessageRiskScore, calculateCodeSecurityScore } from '../shared/scoring.js';
 import { messageAnalysisSchema, codeAnalysisSchema } from '../server/middleware/validator.js';
 import { LruCache } from '../server/utils/cache.js';
@@ -13,12 +13,12 @@ describe('Edge Case Polish Suite (8 Required Robustness Tests)', () => {
   // 1. Empty input
   it('handles empty input gracefully across message and code detectors without throwing', () => {
     const emptyMsgEvidence = [
-      ...scanUrls(''),
-      ...scanPsychologicalTactics(''),
+      ...detectUrlThreats(''),
+      ...detectManipulationTactics(''),
     ];
     const msgScore = calculateMessageRiskScore(emptyMsgEvidence);
     expect(msgScore.score).toBe(0);
-    expect(msgScore.verdict).toBe('Safe');
+    expect(msgScore.level).toBe('SAFE');
 
     const emptyCodeEvidence = [
       ...scanCodeSecrets(''),
@@ -51,7 +51,7 @@ describe('Edge Case Polish Suite (8 Required Robustness Tests)', () => {
     expect(maskResult.maskedText).not.toContain('ABCDE1234F');
     expect(maskResult.counts.pan).toBe(1);
 
-    const urlFindings = scanUrls(maskResult.maskedText);
+    const urlFindings = detectUrlThreats(maskResult.maskedText);
     expect(urlFindings.length).toBeGreaterThanOrEqual(1);
   });
 
@@ -89,7 +89,7 @@ describe('Edge Case Polish Suite (8 Required Robustness Tests)', () => {
 
   // 6. Masking placeholders never contain the raw value
   it('guarantees masking placeholders never contain or leak any part of raw sensitive values', () => {
-    const secretApiKey = 'AIzaSyD9876543210FedCba';
+    const secretApiKey = 'AIzaSyD9876543210FedCba1234567890AbCd';
     const creditCard = '4532 0150 1234 5678';
     const email = 'victim-confidential@secret-corp.internal';
     const rawInput = `Key is ${secretApiKey}, card is ${creditCard}, email is ${email}`;
@@ -99,9 +99,9 @@ describe('Edge Case Polish Suite (8 Required Robustness Tests)', () => {
     expect(maskedText).not.toContain(secretApiKey);
     expect(maskedText).not.toContain('4532 0150 1234 5678');
     expect(maskedText).not.toContain('victim-confidential@secret-corp.internal');
-    expect(maskedText).toMatch(/\[API_KEY_\d+\]/);
-    expect(maskedText).toMatch(/\[CREDIT_CARD_\d+\]/);
-    expect(maskedText).toMatch(/\[EMAIL_\d+\]/);
+    expect(maskedText).toContain('[SECRET_1]');
+    expect(maskedText).toContain('[CARD_1]');
+    expect(maskedText).toContain('[EMAIL_1]');
   });
 
   // 7. Invalid Zod payloads
@@ -118,12 +118,12 @@ describe('Edge Case Polish Suite (8 Required Robustness Tests)', () => {
     const invalidCode1 = codeAnalysisSchema.safeParse({ language: 'javascript' });
     expect(invalidCode1.success).toBe(false);
 
-    // Negative client mask count
-    const invalidMaskCount = messageAnalysisSchema.safeParse({
+    // Rejects unknown fields due to strict schema
+    const invalidExtraField = messageAnalysisSchema.safeParse({
       text: 'hello',
-      clientMaskCounts: { email: -5 },
+      maliciousField: true,
     });
-    expect(invalidMaskCount.success).toBe(false);
+    expect(invalidExtraField.success).toBe(false);
   });
 
   // 8. Cache hit returns same result
