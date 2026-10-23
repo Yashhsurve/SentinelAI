@@ -13,7 +13,7 @@ const PATTERNS = {
   awsKey: /\b(AKIA|ASIA)[0-9A-Z]{16}\b/g,
 
   // 3. Google API Key (AIzaSy...)
-  googleApiKey: /\bAIza[0-9A-Za-z\-_]{35}\b/g,
+  googleApiKey: /\bAIza[0-9A-Za-z\-_]{30,45}\b/g,
 
   // 4. GitHub Tokens
   githubToken: /\b(ghp_[a-zA-Z0-9]{36}|github_pat_[a-zA-Z0-9_]{40,80}|gho_[a-zA-Z0-9]{36}|ghs_[a-zA-Z0-9]{36})\b/g,

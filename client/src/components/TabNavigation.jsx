@@ -1,0 +1,56 @@
+import React, { useRef } from 'react';
+
+export default function TabNavigation({ activeTab, onSelectTab }) {
+  const tabs = [
+    { id: 'messages', label: 'ThreatLens: Message Investigator', icon: '💬' },
+    { id: 'code', label: 'CodeShield: Code Security Auditor', icon: '💻' },
+  ];
+
+  const tabRefs = useRef([]);
+
+  const handleKeyDown = (e, index) => {
+    let nextIndex = null;
+    if (e.key === 'ArrowRight') {
+      nextIndex = (index + 1) % tabs.length;
+    } else if (e.key === 'ArrowLeft') {
+      nextIndex = (index - 1 + tabs.length) % tabs.length;
+    } else if (e.key === 'Home') {
+      nextIndex = 0;
+    } else if (e.key === 'End') {
+      nextIndex = tabs.length - 1;
+    }
+
+    if (nextIndex !== null) {
+      e.preventDefault();
+      onSelectTab(tabs[nextIndex].id);
+      tabRefs.current[nextIndex]?.focus();
+    }
+  };
+
+  return (
+    <nav className="tabs-container" aria-label="Investigation Modules">
+      <div className="tablist" role="tablist" aria-orientation="horizontal">
+        {tabs.map((tab, idx) => {
+          const isSelected = activeTab === tab.id;
+          return (
+            <button
+              key={tab.id}
+              ref={(el) => (tabRefs.current[idx] = el)}
+              role="tab"
+              id={`tab-${tab.id}`}
+              aria-selected={isSelected}
+              aria-controls={`panel-${tab.id}`}
+              tabIndex={isSelected ? 0 : -1}
+              className="tab-button"
+              onClick={() => onSelectTab(tab.id)}
+              onKeyDown={(e) => handleKeyDown(e, idx)}
+            >
+              <span aria-hidden="true">{tab.icon}</span>
+              <span>{tab.label}</span>
+            </button>
+          );
+        })}
+      </div>
+    </nav>
+  );
+}

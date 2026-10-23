@@ -4,13 +4,6 @@
  * reward/lottery bait, credential harvesting, payment demands) in English, Hindi, and Marathi transliteration.
  */
 
-interface TacticDefinition {
-  subtype: string;
-  severity: 'CRITICAL' | 'HIGH' | 'MEDIUM';
-  description: string;
-  patterns: RegExp[];
-}
-
 const TACTICS = [
   {
     subtype: 'credential_request',

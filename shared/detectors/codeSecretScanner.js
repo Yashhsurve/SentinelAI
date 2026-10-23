@@ -92,7 +92,7 @@ export function scanCodeSecrets(code) {
   }
 
   // 3. Google API Key
-  const googleRegex = /\bAIza[0-9A-Za-z\-_]{35}\b/g;
+  const googleRegex = /\bAIza[0-9A-Za-z\-_]{30,45}\b/g;
   let googleMatch;
   while ((googleMatch = googleRegex.exec(code)) !== null) {
     const line = getLineNumber(code, googleMatch.index);
