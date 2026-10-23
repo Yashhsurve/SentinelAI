@@ -128,40 +128,39 @@ export default function App() {
           hasResults={Boolean(activeReportData)}
         />
 
-        {/* One-Click Realistic Sample Data Bar for Judges */}
-        <section className="samples-bar" aria-label="Quick Demonstration Samples">
-          <span className="samples-label">⚡ One-Click Judge Samples:</span>
+        {/* Quick Example Samples Bar */}
+        <section className="samples-bar" aria-label="Example demonstrations">
+          <span className="samples-label">Try an example:</span>
           <button
             type="button"
-            className="btn btn-secondary btn-sm"
+            className="sample-link-btn"
             onClick={() => loadSample('scamMessage')}
-            title="Load realistic SBI/UPI KYC deactivation phishing SMS"
           >
-            🚨 Scam SMS (UPI/KYC)
+            Scam SMS
           </button>
+          <span style={{ color: 'var(--border-color)' }}>•</span>
           <button
             type="button"
-            className="btn btn-secondary btn-sm"
+            className="sample-link-btn"
             onClick={() => loadSample('safeMessage')}
-            title="Load legitimate India Post tracking notification"
           >
-            ✅ Safe SMS (India Post)
+            Safe SMS
           </button>
+          <span style={{ color: 'var(--border-color)' }}>•</span>
           <button
             type="button"
-            className="btn btn-secondary btn-sm"
+            className="sample-link-btn"
             onClick={() => loadSample('vulnerableCode')}
-            title="Load vulnerable Node.js Express script with OWASP flaws"
           >
-            ⚠️ Vulnerable Code (Express)
+            Vulnerable code
           </button>
+          <span style={{ color: 'var(--border-color)' }}>•</span>
           <button
             type="button"
-            className="btn btn-secondary btn-sm"
+            className="sample-link-btn"
             onClick={() => loadSample('promptInjection')}
-            title="Load adversarial prompt injection attack attempt"
           >
-            🛡️ Prompt Injection Exploit
+            Prompt injection test
           </button>
         </section>
 
@@ -182,6 +181,14 @@ export default function App() {
             />
           )}
         </main>
+
+        {/* Quiet Footer with Tagline and Privacy Guarantee */}
+        <footer className="app-footer" role="contentinfo">
+          <div>AI proposes, code verifies, nothing leaves your browser unmasked.</div>
+          <div style={{ color: 'var(--text-muted)', fontSize: '12px' }}>
+            Client-side privacy: Sensitive tokens, credentials, and numbers are masked in your browser prior to inspection.
+          </div>
+        </footer>
 
         {/* Session History Modal */}
         <SessionHistory

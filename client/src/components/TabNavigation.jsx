@@ -2,8 +2,8 @@ import React, { useRef } from 'react';
 
 export default function TabNavigation({ activeTab, onSelectTab }) {
   const tabs = [
-    { id: 'messages', label: 'ThreatLens: Message Investigator', icon: '💬' },
-    { id: 'code', label: 'CodeShield: Code Security Auditor', icon: '💻' },
+    { id: 'messages', label: 'Messages' },
+    { id: 'code', label: 'Code' },
   ];
 
   const tabRefs = useRef([]);
@@ -28,7 +28,7 @@ export default function TabNavigation({ activeTab, onSelectTab }) {
   };
 
   return (
-    <nav className="tabs-container" aria-label="Investigation Modules">
+    <nav className="tabs-container" aria-label="Investigation modules">
       <div className="tablist" role="tablist" aria-orientation="horizontal">
         {tabs.map((tab, idx) => {
           const isSelected = activeTab === tab.id;
@@ -45,7 +45,6 @@ export default function TabNavigation({ activeTab, onSelectTab }) {
               onClick={() => onSelectTab(tab.id)}
               onKeyDown={(e) => handleKeyDown(e, idx)}
             >
-              <span aria-hidden="true">{tab.icon}</span>
               <span>{tab.label}</span>
             </button>
           );
