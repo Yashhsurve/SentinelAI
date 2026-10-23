@@ -5,16 +5,9 @@ export default function MaskedPreview({ maskResult }) {
 
   if (!maskResult || maskResult.totalMasked === 0) {
     return (
-      <div
-        className="card"
-        style={{ padding: '14px 18px', background: 'rgba(0, 242, 254, 0.04)', borderColor: 'rgba(0, 242, 254, 0.2)' }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem' }}>
-          <span aria-hidden="true">🔒</span>
-          <span style={{ color: 'var(--accent-cyan)', fontWeight: 600 }}>Browser Privacy Shield:</span>
-          <span style={{ color: 'var(--text-secondary)' }}>
-            No raw sensitive entities detected. Client-side privacy filter active.
-          </span>
+      <div className="card" style={{ padding: '12px 16px', background: 'var(--bg-subtle)' }}>
+        <div style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
+          No sensitive items detected. Client-side privacy filter is active.
         </div>
       </div>
     );
@@ -23,27 +16,26 @@ export default function MaskedPreview({ maskResult }) {
   const { counts, totalMasked, maskedText } = maskResult;
 
   return (
-    <div className="card" style={{ padding: '16px 20px', borderColor: 'rgba(0, 242, 254, 0.3)' }}>
+    <div className="card" style={{ padding: '14px 16px' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <span style={{ fontSize: '1.2rem' }} aria-hidden="true">🛡️</span>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ fontWeight: 700, color: 'var(--accent-cyan)', fontSize: '0.92rem' }}>
-                Masked in Browser Before Sending
-              </span>
-              <span className="badge-chip" style={{ background: 'rgba(0, 242, 254, 0.15)', color: 'var(--accent-cyan)' }}>
-                {totalMasked} Redacted
-              </span>
-            </div>
-            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: '4px' }}>
-              {counts.email > 0 && <span className="severity-pill low">📧 {counts.email} Email(s)</span>}
-              {counts.phone > 0 && <span className="severity-pill low">📞 {counts.phone} Phone(s)</span>}
-              {counts.aadhaar > 0 && <span className="severity-pill high">🪪 {counts.aadhaar} Aadhaar</span>}
-              {counts.pan > 0 && <span className="severity-pill high">📑 {counts.pan} PAN</span>}
-              {counts.card > 0 && <span className="severity-pill critical">💳 {counts.card} Card(s)</span>}
-              {counts.secret > 0 && <span className="severity-pill critical">🔑 {counts.secret} Secret(s)</span>}
-            </div>
+        <div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ fontWeight: 600, color: 'var(--text-primary)', fontSize: '14px' }}>
+              Privacy protection
+            </span>
+            <span className="status-chip info" style={{ fontSize: '12px' }}>
+              {totalMasked === 1
+                ? '1 sensitive item was masked before analysis'
+                : `${totalMasked} sensitive items were masked before analysis`}
+            </span>
+          </div>
+          <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '6px' }}>
+            {counts.email > 0 && <span className="severity-pill low">{counts.email} email</span>}
+            {counts.phone > 0 && <span className="severity-pill low">{counts.phone} phone</span>}
+            {counts.aadhaar > 0 && <span className="severity-pill medium">{counts.aadhaar} Aadhaar</span>}
+            {counts.pan > 0 && <span className="severity-pill medium">{counts.pan} PAN</span>}
+            {counts.card > 0 && <span className="severity-pill critical">{counts.card} card</span>}
+            {counts.secret > 0 && <span className="severity-pill critical">{counts.secret} credential</span>}
           </div>
         </div>
 
@@ -54,27 +46,27 @@ export default function MaskedPreview({ maskResult }) {
           aria-expanded={isOpen}
           aria-controls="masked-text-preview"
         >
-          {isOpen ? 'Hide Redacted Preview' : '👁️ View Redacted Preview'}
+          {isOpen ? 'Hide masked preview' : 'View masked preview'}
         </button>
       </div>
 
       {isOpen && (
-        <div id="masked-text-preview" style={{ marginTop: '14px' }}>
-          <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '6px' }}>
-            The raw text below is what will be transmitted to the server. Sensitive tokens have been replaced with non-invertible placeholders:
+        <div id="masked-text-preview" style={{ marginTop: '12px' }}>
+          <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '6px' }}>
+            Sensitive values have been replaced with anonymous tokens in your browser:
           </p>
           <pre
             style={{
-              background: 'var(--bg-input)',
+              background: 'var(--bg-subtle)',
               border: '1px solid var(--border-color)',
-              padding: '12px',
-              borderRadius: 'var(--radius-sm)',
+              padding: '10px 12px',
+              borderRadius: 'var(--radius)',
               fontFamily: 'var(--font-mono)',
-              fontSize: '0.82rem',
+              fontSize: '12px',
               color: 'var(--text-secondary)',
               whiteSpace: 'pre-wrap',
               wordBreak: 'break-all',
-              maxHeight: '200px',
+              maxHeight: '160px',
               overflowY: 'auto',
             }}
           >

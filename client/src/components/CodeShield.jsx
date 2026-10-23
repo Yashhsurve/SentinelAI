@@ -10,6 +10,7 @@ import RiskGauge from './RiskGauge.jsx';
 import EvidenceCard from './EvidenceCard.jsx';
 import AgentTrace from './AgentTrace.jsx';
 import FixVerificationModal from './FixVerificationModal.jsx';
+import Icon from './Icon.jsx';
 
 export default function CodeShield({ initialCode = '', onSaveHistory = null }) {
   const [code, setCode] = useState(initialCode);
@@ -191,10 +192,7 @@ export default function CodeShield({ initialCode = '', onSaveHistory = null }) {
         <div>
           <div className="card">
             <div className="card-header">
-              <h2 className="card-title">
-                <span aria-hidden="true">💻</span>
-                <span>Source Code Security Auditor (CodeShield)</span>
-              </h2>
+              <h2 className="card-title">Source code</h2>
 
               <div style={{ display: 'flex', gap: '8px' }}>
                 <input
@@ -211,27 +209,28 @@ export default function CodeShield({ initialCode = '', onSaveHistory = null }) {
                   onClick={() => fileInputRef.current?.click()}
                   title="Upload .js, .ts, .py, .java, or .php file"
                 >
-                  📁 Upload File
+                  <Icon name="upload" size={14} />
+                  <span>Upload file</span>
                 </button>
               </div>
             </div>
 
             <label htmlFor="code-input" className="input-label">
-              Paste source code (JavaScript, TypeScript, Python, Java, PHP):
+              Paste code to scan (JavaScript, TypeScript, Python, Java, PHP):
             </label>
             <textarea
               id="code-input"
               className="textarea-field code-mode"
               value={code}
               onChange={(e) => setCode(e.target.value)}
-              placeholder="// Paste source code to scan for OWASP Top 10 vulnerabilities and hardcoded secrets..."
+              placeholder="// Paste source code to scan for vulnerabilities and exposed secrets..."
               rows={14}
               spellCheck="false"
             />
 
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '12px', flexWrap: 'wrap', gap: '10px' }}>
-              <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
-                {code.split('\n').length} lines | {code.length} chars
+              <span style={{ fontSize: '13px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+                {code.split('\n').length} lines • {code.length} chars
               </span>
 
               <button
@@ -241,7 +240,7 @@ export default function CodeShield({ initialCode = '', onSaveHistory = null }) {
                 disabled={loading || !code.trim()}
                 aria-busy={loading}
               >
-                {loading ? '⚡ Running Autonomous Audit...' : '🛡️ Audit Code with SentinelAI'}
+                {loading ? 'Analyzing code...' : 'Analyze code'}
               </button>
             </div>
           </div>
@@ -253,25 +252,14 @@ export default function CodeShield({ initialCode = '', onSaveHistory = null }) {
           {code.trim() && (
             <div className="card">
               <div className="card-header">
-                <h3 className="card-title">
-                  <span aria-hidden="true">📑</span>
-                  <span>Code Inspector with Line Issue Markers</span>
-                </h3>
-                <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                  {lineIssueMap.size} line(s) flagged
+                <h3 className="card-title">Code inspection</h3>
+                <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
+                  {lineIssueMap.size} line{lineIssueMap.size === 1 ? '' : 's'} flagged
                 </span>
               </div>
 
               <div
-                style={{
-                  background: 'var(--bg-input)',
-                  border: '1px solid var(--border-color)',
-                  borderRadius: 'var(--radius-md)',
-                  maxHeight: '360px',
-                  overflowY: 'auto',
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '0.82rem',
-                }}
+                className="code-inspector-container"
                 tabIndex={0}
                 aria-label="Code inspection view with line-level issues"
               >
@@ -280,39 +268,25 @@ export default function CodeShield({ initialCode = '', onSaveHistory = null }) {
                   const issuesOnLine = lineIssueMap.get(lineNum);
                   const hasIssue = Boolean(issuesOnLine && issuesOnLine.length > 0);
                   const highestSev = hasIssue ? issuesOnLine[0].severity : null;
+                  const sevType = highestSev === 'CRITICAL' ? 'danger' : highestSev === 'HIGH' ? 'warning' : 'info';
 
                   return (
                     <div
                       key={lineNum}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        backgroundColor: hasIssue ? 'rgba(255, 51, 102, 0.12)' : 'transparent',
-                        borderLeft: hasIssue ? '3px solid var(--accent-red)' : '3px solid transparent',
-                        padding: '2px 10px',
-                      }}
+                      className={`code-line ${hasIssue ? `has-issue ${sevType}` : ''}`}
                     >
-                      <span
-                        style={{
-                          width: '36px',
-                          color: hasIssue ? 'var(--accent-red)' : 'var(--text-muted)',
-                          userSelect: 'none',
-                          textAlign: 'right',
-                          paddingRight: '12px',
-                          fontWeight: hasIssue ? 700 : 400,
-                        }}
-                      >
+                      <span className="code-line-number">
                         {lineNum}
                       </span>
 
-                      <span style={{ flex: 1, whiteSpace: 'pre', color: 'var(--text-primary)' }}>
+                      <span className="code-line-text">
                         {lineText || ' '}
                       </span>
 
                       {hasIssue && (
                         <span
                           className={`severity-pill ${highestSev.toLowerCase()}`}
-                          style={{ marginLeft: '10px', fontSize: '0.7rem', padding: '1px 6px' }}
+                          style={{ marginLeft: '10px' }}
                           title={issuesOnLine.map((i) => i.details).join('; ')}
                         >
                           {issuesOnLine[0].id || 'VULN'}
@@ -339,11 +313,10 @@ export default function CodeShield({ initialCode = '', onSaveHistory = null }) {
           {/* AI Executive Summary */}
           {analysisResult?.summary && (
             <div className="card">
-              <h3 className="card-title" style={{ fontSize: '1rem', marginBottom: '8px' }}>
-                <span aria-hidden="true">🧠</span>
-                <span>Verified Security Assessment</span>
+              <h3 className="card-title" style={{ marginBottom: '8px' }}>
+                Assessment
               </h3>
-              <p style={{ fontSize: '0.9rem', color: 'var(--text-primary)', lineHeight: 1.6 }}>
+              <p style={{ fontSize: '14px', color: 'var(--text-primary)', lineHeight: 1.6 }}>
                 {analysisResult.summary}
               </p>
             </div>
@@ -352,28 +325,27 @@ export default function CodeShield({ initialCode = '', onSaveHistory = null }) {
           {/* Sorted Findings List */}
           <div className="card">
             <div className="card-header">
-              <h3 className="card-title">
-                <span aria-hidden="true">🔍</span>
-                <span>Security Findings (Sorted by Severity)</span>
-              </h3>
-              <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                {sortedFindings.length} issue(s)
+              <h3 className="card-title">Findings</h3>
+              <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
+                {sortedFindings.length} issue{sortedFindings.length === 1 ? '' : 's'}
               </span>
             </div>
 
             {sortedFindings.length === 0 ? (
-              <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)' }}>
-                No hardcoded secrets or vulnerability patterns detected.
+              <p style={{ fontSize: '14px', color: 'var(--text-muted)' }}>
+                No vulnerabilities or secrets detected.
               </p>
             ) : (
-              sortedFindings.map((finding, idx) => (
-                <EvidenceCard
-                  key={finding.evidenceId || finding.id || idx}
-                  finding={finding}
-                  onVerifyFix={handleVerifyFix}
-                  onApplyFix={handleApplyFix}
-                />
-              ))
+              <div className="findings-container">
+                {sortedFindings.map((finding, idx) => (
+                  <EvidenceCard
+                    key={finding.evidenceId || finding.id || idx}
+                    finding={finding}
+                    onVerifyFix={handleVerifyFix}
+                    onApplyFix={handleApplyFix}
+                  />
+                ))}
+              </div>
             )}
           </div>
 

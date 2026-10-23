@@ -186,13 +186,10 @@ export default function ThreatLens({ initialText = '', onSaveHistory = null }) {
         <div>
           <div className="card">
             <div className="card-header">
-              <h2 className="card-title">
-                <span aria-hidden="true">📩</span>
-                <span>Pasted Message Input (SMS, WhatsApp, Email)</span>
-              </h2>
+              <h2 className="card-title">Message input</h2>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <label htmlFor="lang-select" style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <label htmlFor="lang-select" style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
                   Language:
                 </label>
                 <select
@@ -210,7 +207,7 @@ export default function ThreatLens({ initialText = '', onSaveHistory = null }) {
             </div>
 
             <label htmlFor="message-input" className="input-label">
-              Enter or paste message contents for autonomous fraud & phishing inspection:
+              Paste a message you're unsure about:
             </label>
             <textarea
               id="message-input"
@@ -222,8 +219,8 @@ export default function ThreatLens({ initialText = '', onSaveHistory = null }) {
             />
 
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '12px', flexWrap: 'wrap', gap: '10px' }}>
-              <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
-                {text.length} characters | {text.trim() ? text.trim().split(/\s+/).length : 0} words
+              <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
+                {text.length} characters • {text.trim() ? text.trim().split(/\s+/).length : 0} words
               </span>
 
               <button
@@ -233,7 +230,7 @@ export default function ThreatLens({ initialText = '', onSaveHistory = null }) {
                 disabled={loading || !text.trim()}
                 aria-busy={loading}
               >
-                {loading ? '⚡ Running Autonomous Pipeline...' : '🔍 Investigate Message with SentinelAI'}
+                {loading ? 'Analyzing message...' : 'Analyze message'}
               </button>
             </div>
           </div>
@@ -245,13 +242,10 @@ export default function ThreatLens({ initialText = '', onSaveHistory = null }) {
           {text.trim() && (
             <div className="card">
               <div className="card-header">
-                <h3 className="card-title">
-                  <span aria-hidden="true">🚩</span>
-                  <span>Inline Threat Inspector (Hover / Focus Flagged Phrases)</span>
-                </h3>
+                <h3 className="card-title">Flagged phrases</h3>
                 {activeFindings.length > 0 && (
-                  <span className="badge-chip" style={{ background: 'rgba(255, 51, 102, 0.15)', color: 'var(--accent-red)' }}>
-                    {activeFindings.length} Threat Flags Found
+                  <span className="status-chip danger">
+                    {activeFindings.length} flagged
                   </span>
                 )}
               </div>
@@ -262,26 +256,17 @@ export default function ThreatLens({ initialText = '', onSaveHistory = null }) {
 
               {/* Active Hover / Focus Tooltip Details */}
               {activeTooltip && (
-                <div
-                  style={{
-                    marginTop: '12px',
-                    padding: '12px 14px',
-                    background: 'var(--bg-card-hover)',
-                    border: '1px solid var(--accent-red)',
-                    borderRadius: 'var(--radius-sm)',
-                    fontSize: '0.86rem',
-                    boxShadow: 'var(--shadow-red)',
-                  }}
-                  role="tooltip"
-                >
+                <div className="tooltip-card" role="tooltip">
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
                     <span className="evidence-id-badge">{activeTooltip.id || activeTooltip.evidenceId}</span>
-                    <strong style={{ color: 'var(--accent-red)' }}>
+                    <strong style={{ color: 'var(--text-primary)' }}>
                       {activeTooltip.subtype || activeTooltip.type}
                     </strong>
-                    <span className="severity-pill critical">{activeTooltip.severity || 'HIGH'}</span>
+                    <span className={`severity-pill ${(activeTooltip.severity || 'HIGH').toLowerCase()}`}>
+                      {activeTooltip.severity || 'HIGH'}
+                    </span>
                   </div>
-                  <p style={{ color: 'var(--text-primary)' }}>
+                  <p style={{ color: 'var(--text-secondary)' }}>
                     {activeTooltip.details || activeTooltip.explanation}
                   </p>
                 </div>
@@ -293,21 +278,18 @@ export default function ThreatLens({ initialText = '', onSaveHistory = null }) {
           {analysisResult?.defangedRewrite && (
             <div className="card">
               <div className="card-header">
-                <h3 className="card-title">
-                  <span aria-hidden="true">🛡️</span>
-                  <span>Defanged Safe-to-Share Rewrite</span>
-                </h3>
+                <h3 className="card-title">Defanged message</h3>
                 <button
                   type="button"
                   className="btn btn-secondary btn-sm"
                   onClick={() => copyDefanged(analysisResult.defangedRewrite)}
                   aria-label="Copy defanged message"
                 >
-                  {copiedRewrite ? '✓ Copied!' : '📋 Copy Defanged'}
+                  {copiedRewrite ? 'Copied' : 'Copy defanged'}
                 </button>
               </div>
-              <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '8px' }}>
-                All hyperlinks and numbers are neutralized with [.] and placeholders so this message can be safely archived or forwarded to fraud investigators.
+              <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '8px' }}>
+                Neutralized with bracketed domains so this message can be safely archived or forwarded.
               </p>
               <div className="defanged-box">
                 {analysisResult.defangedRewrite}
@@ -315,23 +297,20 @@ export default function ThreatLens({ initialText = '', onSaveHistory = null }) {
             </div>
           )}
 
-          {/* Actionable Emergency Checklist */}
+          {/* Actionable Defense Checklist */}
           {analysisResult?.checklist && analysisResult.checklist.length > 0 && (
             <div className="card">
               <div className="card-header">
-                <h3 className="card-title">
-                  <span aria-hidden="true">📋</span>
-                  <span>What To Do Now: Cyber Defense Checklist</span>
-                </h3>
-                <span className="badge-chip" style={{ background: 'rgba(0, 229, 163, 0.1)', color: 'var(--accent-teal)' }}>
+                <h3 className="card-title">Recommended actions</h3>
+                <span className="badge-chip">
                   National Helpline: 1930
                 </span>
               </div>
               <div role="list">
                 {analysisResult.checklist.map((item, idx) => (
                   <div key={idx} className="checklist-item" role="listitem">
-                    <span className="checklist-icon" aria-hidden="true">☑</span>
-                    <span style={{ color: 'var(--text-primary)' }}>{item}</span>
+                    <span style={{ color: 'var(--accent)', marginRight: '6px' }} aria-hidden="true">•</span>
+                    <span>{item}</span>
                   </div>
                 ))}
               </div>
@@ -351,19 +330,12 @@ export default function ThreatLens({ initialText = '', onSaveHistory = null }) {
 
           {/* Scam Type Classification Badge */}
           {currentCategory && currentCategory.type !== 'none' && (
-            <div className="card" style={{ borderColor: 'rgba(255, 183, 3, 0.3)' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
-                <span style={{ fontSize: '1.4rem' }} aria-hidden="true">🏷️</span>
-                <div>
-                  <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>
-                    Deterministic Threat Taxonomy
-                  </span>
-                  <h4 style={{ fontSize: '1.05rem', color: 'var(--accent-amber)', fontWeight: 700 }}>
-                    {currentCategory.label}
-                  </h4>
-                </div>
+            <div className="card">
+              <div className="card-header">
+                <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Threat category</span>
+                <span className="status-chip warning">{currentCategory.label}</span>
               </div>
-              <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+              <p style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
                 {currentCategory.description}
               </p>
             </div>
@@ -372,11 +344,10 @@ export default function ThreatLens({ initialText = '', onSaveHistory = null }) {
           {/* Plain-Language Explanation */}
           {analysisResult?.explanation && (
             <div className="card">
-              <h3 className="card-title" style={{ fontSize: '1rem', marginBottom: '10px' }}>
-                <span aria-hidden="true">🧠</span>
-                <span>Verified Security Assessment</span>
+              <h3 className="card-title" style={{ marginBottom: '8px' }}>
+                Assessment
               </h3>
-              <p style={{ fontSize: '0.92rem', color: 'var(--text-primary)', lineHeight: 1.6 }}>
+              <p style={{ fontSize: '14px', color: 'var(--text-primary)', lineHeight: 1.6 }}>
                 {analysisResult.explanation}
               </p>
             </div>
@@ -385,23 +356,22 @@ export default function ThreatLens({ initialText = '', onSaveHistory = null }) {
           {/* Ground-Truth Verified Evidence List */}
           <div className="card">
             <div className="card-header">
-              <h3 className="card-title">
-                <span aria-hidden="true">🔍</span>
-                <span>Evidence-Grounded Findings</span>
-              </h3>
-              <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                {activeFindings.length} item(s)
+              <h3 className="card-title">Findings</h3>
+              <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
+                {activeFindings.length} item{activeFindings.length === 1 ? '' : 's'}
               </span>
             </div>
 
             {activeFindings.length === 0 ? (
-              <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)' }}>
-                No active threats or malicious evidence detected.
+              <p style={{ fontSize: '14px', color: 'var(--text-muted)' }}>
+                Nothing found in this message.
               </p>
             ) : (
-              activeFindings.map((finding, idx) => (
-                <EvidenceCard key={finding.evidenceId || finding.id || idx} finding={finding} />
-              ))
+              <div className="findings-container">
+                {activeFindings.map((finding, idx) => (
+                  <EvidenceCard key={finding.evidenceId || finding.id || idx} finding={finding} />
+                ))}
+              </div>
             )}
           </div>
 

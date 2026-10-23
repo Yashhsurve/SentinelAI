@@ -1,14 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import Icon from './Icon.jsx';
 
 export default function ReportModal({ isOpen, reportData, onClose }) {
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen || !reportData) return null;
 
   const downloadJsonReport = () => {
-    // Sanitize report: ensure only masked previews are exported
     const exportable = {
-      generator: 'SentinelAI: Autonomous Security Investigator',
+      generator: 'SentinelAI Security Report',
       timestamp: new Date().toISOString(),
-      privacyCompliance: 'Client-side masked before export - Zero raw PII/secrets',
+      privacy: 'Client-side masked before export',
       report: reportData,
     };
 
@@ -18,7 +27,7 @@ export default function ReportModal({ isOpen, reportData, onClose }) {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `sentinel-security-report-${Date.now()}.json`;
+    a.download = `sentinel-report-${Date.now()}.json`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -31,101 +40,103 @@ export default function ReportModal({ isOpen, reportData, onClose }) {
 
   return (
     <div className="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="report-modal-title">
-      <div className="modal-content" style={{ maxWidth: '850px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '18px' }}>
+      <div className="modal-content" style={{ maxWidth: '800px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px', flexWrap: 'wrap', gap: '10px' }}>
           <div>
-            <h2 id="report-modal-title" style={{ fontSize: '1.3rem', fontWeight: 800, color: 'var(--text-primary)' }}>
-              📄 SentinelAI Security Incident & Audit Report
+            <h2 id="report-modal-title" style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-primary)' }}>
+              Security incident and audit report
             </h2>
-            <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-              Export Date: {new Date().toLocaleString()} &bull; Module: {reportData.module || 'Security Analysis'}
+            <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
+              Generated on {new Date().toLocaleString()}
             </span>
           </div>
 
           <div style={{ display: 'flex', gap: '8px' }}>
             <button type="button" className="btn btn-secondary btn-sm" onClick={handlePrint}>
-              🖨️ Print / Save PDF
+              <Icon name="printer" size={14} />
+              <span>Print</span>
             </button>
-            <button type="button" className="btn btn-primary btn-sm" onClick={downloadJsonReport}>
-              💾 Download JSON
+            <button type="button" className="btn btn-secondary btn-sm" onClick={downloadJsonReport}>
+              <Icon name="download" size={14} />
+              <span>Download JSON</span>
             </button>
-            <button type="button" className="btn btn-secondary btn-sm" onClick={onClose}>
-              ✕
+            <button type="button" className="btn btn-secondary btn-sm" onClick={onClose} aria-label="Close report">
+              <Icon name="x" size={14} />
             </button>
           </div>
         </div>
 
-        {/* Printable Security Report Summary */}
-        <div style={{ padding: '16px', background: 'var(--bg-secondary)', borderRadius: 'var(--radius-md)', marginBottom: '20px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '14px' }}>
+        {/* Security Report Summary */}
+        <div style={{ padding: '14px', background: 'var(--bg-subtle)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius)', marginBottom: '16px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '12px' }}>
             <div>
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>
-                Overall Assessment
+              <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                Assessment verdict
               </span>
-              <div style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--accent-cyan)' }}>
-                {reportData.verdict || reportData.status || 'ANALYZED'}
+              <div style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', marginTop: '2px' }}>
+                {reportData.verdict || reportData.status || 'Analyzed'}
               </div>
             </div>
 
             <div>
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>
-                {reportData.module === 'CodeShield' ? 'Security Health Score' : 'Threat Risk Score'}
+              <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                {reportData.module === 'CodeShield' ? 'Security score' : 'Risk score'}
               </span>
-              <div style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--accent-teal)', fontFamily: 'var(--font-mono)' }}>
+              <div style={{ fontSize: '16px', fontWeight: 600, color: 'var(--accent)', fontFamily: 'var(--font-mono)', marginTop: '2px' }}>
                 {reportData.riskScore ?? reportData.securityScore ?? 0} / 100
               </div>
             </div>
 
             <div>
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>
-                Verified Findings
+              <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                Verified findings
               </span>
-              <div style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-primary)' }}>
-                {reportData.findings?.length || 0} Ground-Truth Items
+              <div style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', marginTop: '2px' }}>
+                {reportData.findings?.length || 0} items
               </div>
             </div>
           </div>
         </div>
 
-        {/* Plain Language Assessment */}
+        {/* Assessment Text */}
         {(reportData.explanation || reportData.summary) && (
-          <div style={{ marginBottom: '20px' }}>
-            <h3 style={{ fontSize: '0.98rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '6px' }}>
-              Executive Analysis
+          <div style={{ marginBottom: '16px' }}>
+            <h3 style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '4px' }}>
+              Summary
             </h3>
-            <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+            <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
               {reportData.explanation || reportData.summary}
             </p>
           </div>
         )}
 
-        {/* Ground-Truth Findings */}
+        {/* Itemized Findings */}
         {reportData.findings && reportData.findings.length > 0 && (
-          <div style={{ marginBottom: '20px' }}>
-            <h3 style={{ fontSize: '0.98rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '10px' }}>
-              Itemized Verified Evidence ({reportData.findings.length})
+          <div style={{ marginBottom: '16px' }}>
+            <h3 style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '8px' }}>
+              Findings ({reportData.findings.length})
             </h3>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
               {reportData.findings.map((f, idx) => (
                 <div
                   key={idx}
                   style={{
-                    padding: '10px 14px',
+                    padding: '8px 12px',
                     border: '1px solid var(--border-color)',
-                    borderRadius: 'var(--radius-sm)',
-                    fontSize: '0.84rem',
-                    background: 'var(--bg-input)',
+                    borderRadius: 'var(--radius)',
+                    fontSize: '13px',
+                    background: 'var(--bg-panel)',
                   }}
                 >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-                    <strong style={{ color: 'var(--accent-cyan)' }}>
-                      [{f.evidenceId}] {f.subtype || f.evidenceType || 'Flag'}
-                    </strong>
-                    <span className="severity-pill critical" style={{ fontSize: '0.7rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2px' }}>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 500, color: 'var(--text-primary)' }}>
+                      [{f.evidenceId}] {f.subtype || f.evidenceType || 'Signal'}
+                    </span>
+                    <span className={`severity-pill ${(f.severity || 'HIGH').toLowerCase()}`}>
                       {f.severity}
                     </span>
                   </div>
-                  <div style={{ color: 'var(--text-primary)' }}>{f.explanation}</div>
+                  <div style={{ color: 'var(--text-secondary)' }}>{f.explanation}</div>
                 </div>
               ))}
             </div>
@@ -134,11 +145,11 @@ export default function ReportModal({ isOpen, reportData, onClose }) {
 
         {/* Actionable Defense Checklist */}
         {reportData.checklist && reportData.checklist.length > 0 && (
-          <div style={{ marginBottom: '20px' }}>
-            <h3 style={{ fontSize: '0.98rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '8px' }}>
-              Recommended Remediation & Emergency Protocols
+          <div style={{ marginBottom: '16px' }}>
+            <h3 style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '6px' }}>
+              Recommended actions
             </h3>
-            <ul style={{ paddingLeft: '20px', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+            <ul style={{ paddingLeft: '18px', fontSize: '13px', color: 'var(--text-secondary)' }}>
               {reportData.checklist.map((item, idx) => (
                 <li key={idx} style={{ marginBottom: '4px' }}>
                   {item}
@@ -148,23 +159,23 @@ export default function ReportModal({ isOpen, reportData, onClose }) {
           </div>
         )}
 
-        {/* Sanitized Masked Content */}
+        {/* Masked Content */}
         {reportData.maskedPreview && (
           <div>
-            <h3 style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-secondary)', marginBottom: '6px' }}>
-              Sanitized Audit Payload (Redacted in Browser)
+            <h3 style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '4px' }}>
+              Masked payload
             </h3>
             <pre
               style={{
-                background: 'var(--bg-input)',
+                background: 'var(--bg-subtle)',
                 border: '1px solid var(--border-color)',
-                padding: '10px',
-                borderRadius: 'var(--radius-sm)',
+                padding: '8px 12px',
+                borderRadius: 'var(--radius)',
                 fontFamily: 'var(--font-mono)',
-                fontSize: '0.78rem',
+                fontSize: '12px',
                 color: 'var(--text-muted)',
                 whiteSpace: 'pre-wrap',
-                maxHeight: '140px',
+                maxHeight: '120px',
                 overflowY: 'auto',
               }}
             >

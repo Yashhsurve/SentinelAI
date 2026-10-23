@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import Icon from './Icon.jsx';
 
 export default function SessionHistory({
   isOpen,
@@ -7,14 +8,23 @@ export default function SessionHistory({
   onClear,
   onClose,
 }) {
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   return (
     <div className="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="history-modal-title">
       <div className="modal-content">
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '18px' }}>
-          <h2 id="history-modal-title" style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-primary)' }}>
-            🕒 Analysis History (Client LocalStorage Only)
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px', flexWrap: 'wrap', gap: '8px' }}>
+          <h2 id="history-modal-title" style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)' }}>
+            Analysis history
           </h2>
           <div style={{ display: 'flex', gap: '8px' }}>
             {history.length > 0 && (
@@ -24,69 +34,67 @@ export default function SessionHistory({
                 onClick={onClear}
                 aria-label="Clear all session history"
               >
-                🗑️ Clear History
+                <Icon name="trash" size={13} />
+                <span>Clear history</span>
               </button>
             )}
             <button
               type="button"
               className="btn btn-secondary btn-sm"
               onClick={onClose}
-              aria-label="Close History Modal"
+              aria-label="Close history modal"
             >
-              ✕ Close
+              <Icon name="x" size={13} />
+              <span>Close</span>
             </button>
           </div>
         </div>
 
-        <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '16px' }}>
-          🔒 <strong>Privacy Guarantee:</strong> Only client-masked payloads and deterministic scores are preserved in your local browser cache. No raw credentials or database storage ever exist.
+        <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '16px' }}>
+          Only masked previews and scores are preserved in your local browser cache.
         </p>
 
         {history.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '40px 20px', color: 'var(--text-muted)' }}>
-            <span style={{ fontSize: '2.5rem', display: 'block', marginBottom: '10px' }} aria-hidden="true">
-              📂
-            </span>
-            <p>No past analysis sessions recorded in this browser.</p>
+          <div style={{ textAlign: 'center', padding: '32px 16px', color: 'var(--text-muted)' }}>
+            <p style={{ fontSize: '14px' }}>No past analysis sessions recorded in this browser.</p>
           </div>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             {history.map((item, idx) => (
               <div
                 key={item.id || idx}
                 style={{
-                  background: 'var(--bg-secondary)',
+                  background: 'var(--bg-panel)',
                   border: '1px solid var(--border-color)',
-                  borderRadius: 'var(--radius-md)',
-                  padding: '14px',
+                  borderRadius: 'var(--radius)',
+                  padding: '12px 14px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
-                  gap: '14px',
+                  gap: '12px',
                   flexWrap: 'wrap',
                 }}
               >
                 <div style={{ flex: 1, minWidth: '220px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                    <span style={{ fontSize: '1.1rem' }}>{item.type === 'message' ? '💬' : '💻'}</span>
-                    <strong style={{ fontSize: '0.94rem', color: 'var(--text-primary)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '3px' }}>
+                    <strong style={{ fontSize: '14px', color: 'var(--text-primary)' }}>
                       {item.title}
                     </strong>
-                    <span className="badge-chip" style={{ fontSize: '0.72rem' }}>
-                      Score: {item.score}
+                    <span className="badge-chip" style={{ fontSize: '12px', padding: '1px 6px' }}>
+                      Score {item.score}
                     </span>
                   </div>
-                  <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-                    {new Date(item.timestamp).toLocaleString()} &bull; {item.findingsCount} findings
+                  <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
+                    {new Date(item.timestamp).toLocaleString()} • {item.findingsCount} findings
                   </div>
                   {item.maskedPreview && (
                     <div
                       style={{
-                        fontSize: '0.78rem',
+                        fontSize: '12px',
                         fontFamily: 'var(--font-mono)',
                         color: 'var(--text-secondary)',
-                        marginTop: '6px',
-                        maxHeight: '40px',
+                        marginTop: '4px',
+                        maxHeight: '36px',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                       }}
@@ -104,7 +112,7 @@ export default function SessionHistory({
                     onClose();
                   }}
                 >
-                  ⚡ Restore
+                  Restore
                 </button>
               </div>
             ))}

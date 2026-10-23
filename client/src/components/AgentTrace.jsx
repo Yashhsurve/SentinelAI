@@ -4,83 +4,43 @@ export default function AgentTrace({ agentTrace = [], unsupportedClaimsDropped =
   if (!agentTrace || agentTrace.length === 0) return null;
 
   return (
-    <div className="card" style={{ marginTop: '24px' }}>
+    <div className="card" style={{ marginTop: '16px' }}>
       <div className="card-header">
-        <h3 className="card-title">
-          <span aria-hidden="true">⚡</span>
-          <span>Autonomous Agent Activity Timeline</span>
-        </h3>
-        <span style={{ fontSize: '0.8rem', fontFamily: 'var(--font-mono)', color: 'var(--accent-cyan)' }}>
-          Total Pipeline Latency: {latencyMs}ms
+        <h3 className="card-title">Agent activity</h3>
+        <span style={{ fontSize: '12px', fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)' }}>
+          Total duration: {latencyMs}ms
         </span>
       </div>
-
-      <p style={{ fontSize: '0.86rem', color: 'var(--text-secondary)', marginBottom: '14px' }}>
-        Step-by-step telemetry executing the SentinelAI agentic loop: <strong>DETECT &rarr; MASK &rarr; REASON &rarr; VERIFY &rarr; REPORT</strong>.
-      </p>
 
       {unsupportedClaimsDropped > 0 && (
         <div
           style={{
-            padding: '10px 14px',
-            background: 'rgba(255, 51, 102, 0.15)',
-            border: '1px solid var(--accent-red)',
-            borderRadius: 'var(--radius-sm)',
+            padding: '8px 12px',
+            background: 'var(--status-warning-bg)',
+            border: '1px solid var(--status-warning-border)',
+            borderRadius: 'var(--radius)',
             marginBottom: '12px',
-            fontSize: '0.85rem',
-            color: 'var(--text-primary)',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
+            fontSize: '13px',
+            color: 'var(--status-warning-text)',
           }}
         >
-          <span aria-hidden="true">🛡️</span>
-          <span>
-            <strong>Anti-Hallucination Shield Active:</strong> {unsupportedClaimsDropped} unsupported AI claim(s) were automatically dropped because they lacked deterministic code evidence.
-          </span>
+          Anti-hallucination shield: {unsupportedClaimsDropped} unsupported AI claim(s) were dropped because they lacked code evidence.
         </div>
       )}
 
-      <div className="agent-trace-container" role="list" aria-label="Agent Execution Steps">
+      <div className="agent-trace-list" role="list" aria-label="Agent execution steps">
         {agentTrace.map((trace, idx) => {
           const isFallback = trace.status === 'FALLBACK';
-          const isCache = trace.step === 'CACHE';
 
           return (
-            <div key={idx} className="trace-step-item" role="listitem">
+            <div key={idx} className="agent-trace-item" role="listitem">
+              <span className="agent-trace-step">{trace.step}</span>
               <span
-                className="trace-step-badge"
-                style={{
-                  background: isFallback
-                    ? 'rgba(255, 183, 3, 0.15)'
-                    : isCache
-                    ? 'rgba(139, 92, 246, 0.15)'
-                    : 'rgba(0, 242, 254, 0.12)',
-                  color: isFallback
-                    ? 'var(--accent-amber)'
-                    : isCache
-                    ? 'var(--accent-purple)'
-                    : 'var(--accent-cyan)',
-                  borderColor: isFallback
-                    ? 'var(--accent-amber)'
-                    : isCache
-                    ? 'var(--accent-purple)'
-                    : 'var(--accent-cyan)',
-                }}
-              >
-                {trace.step}
-              </span>
-
-              <div className="trace-step-content">
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
-                  <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>
-                    {trace.note}
-                  </span>
-                  <span className="trace-step-duration">
-                    {trace.durationMs}ms
-                  </span>
-                </div>
-              </div>
+                className={`status-dot ${isFallback ? 'amber' : 'green'}`}
+                aria-hidden="true"
+              />
+              <span className="agent-trace-note">{trace.note}</span>
+              <span className="agent-trace-duration">{trace.durationMs}ms</span>
             </div>
           );
         })}
