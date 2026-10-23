@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Icon from './Icon.jsx';
 
 export default function SessionHistory({
@@ -8,10 +8,36 @@ export default function SessionHistory({
   onClear,
   onClose,
 }) {
+  const modalRef = useRef(null);
+
   useEffect(() => {
     if (!isOpen) return;
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === 'Escape') {
+        onClose();
+        return;
+      }
+
+      if (e.key === 'Tab' && modalRef.current) {
+        const focusables = modalRef.current.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusables.length === 0) return;
+        const firstElement = focusables[0];
+        const lastElement = focusables[focusables.length - 1];
+
+        if (e.shiftKey) {
+          if (document.activeElement === firstElement) {
+            e.preventDefault();
+            lastElement.focus();
+          }
+        } else {
+          if (document.activeElement === lastElement) {
+            e.preventDefault();
+            firstElement.focus();
+          }
+        }
+      }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
@@ -21,7 +47,7 @@ export default function SessionHistory({
 
   return (
     <div className="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="history-modal-title">
-      <div className="modal-content">
+      <div ref={modalRef} className="modal-content">
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px', flexWrap: 'wrap', gap: '8px' }}>
           <h2 id="history-modal-title" style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)' }}>
             Analysis history

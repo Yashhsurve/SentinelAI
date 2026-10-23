@@ -1,11 +1,37 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Icon from './Icon.jsx';
 
 export default function ReportModal({ isOpen, reportData, onClose }) {
+  const modalRef = useRef(null);
+
   useEffect(() => {
     if (!isOpen) return;
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === 'Escape') {
+        onClose();
+        return;
+      }
+
+      if (e.key === 'Tab' && modalRef.current) {
+        const focusables = modalRef.current.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusables.length === 0) return;
+        const firstElement = focusables[0];
+        const lastElement = focusables[focusables.length - 1];
+
+        if (e.shiftKey) {
+          if (document.activeElement === firstElement) {
+            e.preventDefault();
+            lastElement.focus();
+          }
+        } else {
+          if (document.activeElement === lastElement) {
+            e.preventDefault();
+            firstElement.focus();
+          }
+        }
+      }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
@@ -40,7 +66,7 @@ export default function ReportModal({ isOpen, reportData, onClose }) {
 
   return (
     <div className="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="report-modal-title">
-      <div className="modal-content" style={{ maxWidth: '800px' }}>
+      <div ref={modalRef} className="modal-content" style={{ maxWidth: '800px' }}>
         {/* Printable Report Header for print media */}
         <div className="printable-report-header">
           <img src="/logo.png" alt="" width="28" height="28" decoding="async" />
