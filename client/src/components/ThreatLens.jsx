@@ -363,9 +363,18 @@ export default function ThreatLens({ initialText = '', onSaveHistory = null }) {
             </div>
 
             {activeFindings.length === 0 ? (
-              <p style={{ fontSize: '14px', color: 'var(--text-muted)' }}>
-                Nothing found in this message.
-              </p>
+              <div className="empty-state-panel">
+                <img
+                  src="/logo.png"
+                  alt="SentinelAI"
+                  width="48"
+                  height="48"
+                  decoding="async"
+                  className="empty-state-logo"
+                />
+                <span className="empty-state-brand">SentinelAI</span>
+                <p className="empty-state-text">Nothing found in this message.</p>
+              </div>
             ) : (
               <div className="findings-container">
                 {activeFindings.map((finding, idx) => (

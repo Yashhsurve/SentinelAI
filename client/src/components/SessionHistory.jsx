@@ -80,17 +80,17 @@ export default function SessionHistory({
                     <strong style={{ fontSize: '14px', color: 'var(--text-primary)' }}>
                       {item.title}
                     </strong>
-                    <span className="badge-chip" style={{ fontSize: '12px', padding: '1px 6px' }}>
+                    <span className="badge-chip" style={{ fontSize: '13px', padding: '1px 6px' }}>
                       Score {item.score}
                     </span>
                   </div>
-                  <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
+                  <div style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
                     {new Date(item.timestamp).toLocaleString()} • {item.findingsCount} findings
                   </div>
                   {item.maskedPreview && (
                     <div
                       style={{
-                        fontSize: '12px',
+                        fontSize: '13px',
                         fontFamily: 'var(--font-mono)',
                         color: 'var(--text-secondary)',
                         marginTop: '4px',

@@ -41,14 +41,24 @@ export default function ReportModal({ isOpen, reportData, onClose }) {
   return (
     <div className="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="report-modal-title">
       <div className="modal-content" style={{ maxWidth: '800px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px', flexWrap: 'wrap', gap: '10px' }}>
-          <div>
-            <h2 id="report-modal-title" style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-primary)' }}>
-              Security incident and audit report
-            </h2>
-            <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
-              Generated on {new Date().toLocaleString()}
-            </span>
+        {/* Printable Report Header for print media */}
+        <div className="printable-report-header">
+          <img src="/logo.png" alt="" width="28" height="28" decoding="async" />
+          <span><strong>SentinelAI</strong> Security Incident and Audit Report</span>
+        </div>
+
+        <div className="report-modal-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px', flexWrap: 'wrap', gap: '10px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <img src="/logo.png" alt="" width="26" height="26" decoding="async" className="report-logo-img" />
+            <div>
+              <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--accent)' }}>SentinelAI</div>
+              <h2 id="report-modal-title" style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-primary)' }}>
+                Security incident and audit report
+              </h2>
+              <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
+                Generated on {new Date().toLocaleString()}
+              </span>
+            </div>
           </div>
 
           <div style={{ display: 'flex', gap: '8px' }}>
@@ -70,7 +80,7 @@ export default function ReportModal({ isOpen, reportData, onClose }) {
         <div style={{ padding: '14px', background: 'var(--bg-subtle)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius)', marginBottom: '16px' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '12px' }}>
             <div>
-              <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+              <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
                 Assessment verdict
               </span>
               <div style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', marginTop: '2px' }}>
@@ -79,7 +89,7 @@ export default function ReportModal({ isOpen, reportData, onClose }) {
             </div>
 
             <div>
-              <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+              <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
                 {reportData.module === 'CodeShield' ? 'Security score' : 'Risk score'}
               </span>
               <div style={{ fontSize: '16px', fontWeight: 600, color: 'var(--accent)', fontFamily: 'var(--font-mono)', marginTop: '2px' }}>
@@ -88,7 +98,7 @@ export default function ReportModal({ isOpen, reportData, onClose }) {
             </div>
 
             <div>
-              <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+              <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
                 Verified findings
               </span>
               <div style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', marginTop: '2px' }}>
@@ -172,7 +182,7 @@ export default function ReportModal({ isOpen, reportData, onClose }) {
                 padding: '8px 12px',
                 borderRadius: 'var(--radius)',
                 fontFamily: 'var(--font-mono)',
-                fontSize: '12px',
+                fontSize: '13px',
                 color: 'var(--text-muted)',
                 whiteSpace: 'pre-wrap',
                 maxHeight: '120px',

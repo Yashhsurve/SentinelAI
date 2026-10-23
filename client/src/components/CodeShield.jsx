@@ -332,9 +332,18 @@ export default function CodeShield({ initialCode = '', onSaveHistory = null }) {
             </div>
 
             {sortedFindings.length === 0 ? (
-              <p style={{ fontSize: '14px', color: 'var(--text-muted)' }}>
-                No vulnerabilities or secrets detected.
-              </p>
+              <div className="empty-state-panel">
+                <img
+                  src="/logo.png"
+                  alt="SentinelAI"
+                  width="48"
+                  height="48"
+                  decoding="async"
+                  className="empty-state-logo"
+                />
+                <span className="empty-state-brand">SentinelAI</span>
+                <p className="empty-state-text">No vulnerabilities or secrets detected.</p>
+              </div>
             ) : (
               <div className="findings-container">
                 {sortedFindings.map((finding, idx) => (
