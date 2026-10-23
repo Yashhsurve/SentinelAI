@@ -1,3 +1,5 @@
+import path from 'path';
+import { fileURLToPath } from 'url';
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -8,11 +10,18 @@ import messageRoutes from './routes/messageRoutes.js';
 import codeRoutes from './routes/codeRoutes.js';
 import healthRoutes from './routes/healthRoutes.js';
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const distPath = path.join(__dirname, '../dist');
+
 export const app = express();
+
+// Disable x-powered-by to prevent fingerprinting
+app.disable('x-powered-by');
 
 // 1. Security Headers with Helmet
 app.use(
   helmet({
+    referrerPolicy: { policy: 'no-referrer' },
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
@@ -72,10 +81,6 @@ app.use('/api', messageRoutes);
 app.use('/api', codeRoutes);
 
 // 6. Serve static production client build if available (e.g. Google Cloud Run)
-import path from 'path';
-import { fileURLToPath } from 'url';
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const distPath = path.join(__dirname, '../dist');
 app.use(express.static(distPath));
 
 app.get('*', (req, res, next) => {
