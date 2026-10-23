@@ -1,8 +1,60 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
+
+// Mock Gemini API for fast, isolated, deterministic API tests
+vi.mock('../server/agent/geminiClient.js', () => ({
+  callGeminiStructured: vi.fn().mockImplementation(async (prompt, schema) => {
+    // If message schema
+    if (schema?.properties?.verdict) {
+      return {
+        verdict: 'SCAM',
+        explanation: 'Mocked Gemini: High risk phishing detected with spoofed URL and urgency coercion.',
+        findings: [
+          { evidenceId: 'URL-01', explanation: 'Spoofed lookalike brand domain', severity: 'CRITICAL' },
+          { evidenceId: 'TACTIC-01', explanation: 'Artificial urgency coercion', severity: 'HIGH' },
+          { evidenceId: 'TACTIC-02', explanation: 'Direct OTP harvesting', severity: 'CRITICAL' },
+        ],
+        checklist: [
+          'Call National Cyber Helpline 1930 immediately.',
+          'File report at https://cybercrime.gov.in.',
+          'Contact bank to freeze card and accounts.',
+        ],
+        defangedRewrite: 'Dear user, visit hxxp://paytmm[.]com/verify',
+      };
+    }
+
+    // Code audit schema
+    return {
+      summary: 'Mocked Gemini: Critical code security vulnerabilities detected.',
+      findings: [
+        {
+          evidenceId: 'SEC-01',
+          explanation: 'Exposed cloud credential',
+          severity: 'CRITICAL',
+          suggestedFix: 'const apiKey = process.env.API_KEY || "";',
+        },
+        {
+          evidenceId: 'VULN-01',
+          explanation: 'SQL injection flaw',
+          severity: 'CRITICAL',
+          suggestedFix: 'const res = await db.query("SELECT * FROM users WHERE id = $1", [userId]);',
+        },
+        {
+          evidenceId: 'VULN-02',
+          explanation: 'Dynamic eval code execution',
+          severity: 'CRITICAL',
+          suggestedFix: 'const res = JSON.parse(code);',
+        },
+      ],
+    };
+  }),
+  MESSAGE_RESPONSE_SCHEMA: { properties: { verdict: {} } },
+  CODE_RESPONSE_SCHEMA: { properties: { summary: {} } },
+}));
+
 import request from 'supertest';
 import { app } from '../server/server.js';
 
-describe('SentinelAI API Endpoints', () => {
+describe('SentinelAI API Endpoints (Gemini Mocked)', () => {
   it('GET /api/health returns system status and mode', async () => {
     const res = await request(app).get('/api/health');
 
