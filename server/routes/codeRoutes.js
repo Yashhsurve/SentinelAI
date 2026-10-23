@@ -11,10 +11,12 @@ import { logger } from '../utils/logger.js';
 
 const router = express.Router();
 
-const verifyFixSchema = z.object({
-  originalCode: z.string().max(50000),
-  fixedCode: z.string().max(50000),
-}).strict();
+const verifyFixSchema = z
+  .object({
+    originalCode: z.string().max(50000),
+    fixedCode: z.string().max(50000),
+  })
+  .strict();
 
 router.post('/analyze-code', validateBody(codeAnalysisSchema), async (req, res) => {
   try {
@@ -28,7 +30,12 @@ router.post('/analyze-code', validateBody(codeAnalysisSchema), async (req, res) 
         ...cached,
         isCached: true,
         agentTrace: [
-          { step: 'CACHE', status: 'HIT', durationMs: 1, note: 'Retrieved code audit from in-memory LRU cache' },
+          {
+            step: 'CACHE',
+            status: 'HIT',
+            durationMs: 1,
+            note: 'Retrieved code audit from in-memory LRU cache',
+          },
           ...cached.agentTrace,
         ],
       });

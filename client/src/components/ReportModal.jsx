@@ -65,20 +65,49 @@ export default function ReportModal({ isOpen, reportData, onClose }) {
   };
 
   return (
-    <div className="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="report-modal-title">
+    <div
+      className="modal-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="report-modal-title"
+    >
       <div ref={modalRef} className="modal-content" style={{ maxWidth: '800px' }}>
         {/* Printable Report Header for print media */}
         <div className="printable-report-header">
           <img src="/logo.png" alt="" width="28" height="28" decoding="async" />
-          <span><strong>SentinelAI</strong> Security Incident and Audit Report</span>
+          <span>
+            <strong>SentinelAI</strong> Security Incident and Audit Report
+          </span>
         </div>
 
-        <div className="report-modal-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px', flexWrap: 'wrap', gap: '10px' }}>
+        <div
+          className="report-modal-header"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginBottom: '16px',
+            flexWrap: 'wrap',
+            gap: '10px',
+          }}
+        >
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <img src="/logo.png" alt="" width="26" height="26" decoding="async" className="report-logo-img" />
+            <img
+              src="/logo.png"
+              alt=""
+              width="26"
+              height="26"
+              decoding="async"
+              className="report-logo-img"
+            />
             <div>
-              <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--accent)' }}>SentinelAI</div>
-              <h2 id="report-modal-title" style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-primary)' }}>
+              <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--accent)' }}>
+                SentinelAI
+              </div>
+              <h2
+                id="report-modal-title"
+                style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-primary)' }}
+              >
                 Security incident and audit report
               </h2>
               <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
@@ -96,20 +125,46 @@ export default function ReportModal({ isOpen, reportData, onClose }) {
               <Icon name="download" size={14} />
               <span>Download JSON</span>
             </button>
-            <button type="button" className="btn btn-secondary btn-sm" onClick={onClose} aria-label="Close report">
+            <button
+              type="button"
+              className="btn btn-secondary btn-sm"
+              onClick={onClose}
+              aria-label="Close report"
+            >
               <Icon name="x" size={14} />
             </button>
           </div>
         </div>
 
         {/* Security Report Summary */}
-        <div style={{ padding: '14px', background: 'var(--bg-subtle)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius)', marginBottom: '16px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '12px' }}>
+        <div
+          style={{
+            padding: '14px',
+            background: 'var(--bg-subtle)',
+            border: '1px solid var(--border-color)',
+            borderRadius: 'var(--radius)',
+            marginBottom: '16px',
+          }}
+        >
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
+              gap: '12px',
+            }}
+          >
             <div>
               <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
                 Assessment verdict
               </span>
-              <div style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', marginTop: '2px' }}>
+              <div
+                style={{
+                  fontSize: '16px',
+                  fontWeight: 600,
+                  color: 'var(--text-primary)',
+                  marginTop: '2px',
+                }}
+              >
                 {reportData.verdict || reportData.status || 'Analyzed'}
               </div>
             </div>
@@ -118,7 +173,15 @@ export default function ReportModal({ isOpen, reportData, onClose }) {
               <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
                 {reportData.module === 'CodeShield' ? 'Security score' : 'Risk score'}
               </span>
-              <div style={{ fontSize: '16px', fontWeight: 600, color: 'var(--accent)', fontFamily: 'var(--font-mono)', marginTop: '2px' }}>
+              <div
+                style={{
+                  fontSize: '16px',
+                  fontWeight: 600,
+                  color: 'var(--accent)',
+                  fontFamily: 'var(--font-mono)',
+                  marginTop: '2px',
+                }}
+              >
                 {reportData.riskScore ?? reportData.securityScore ?? 0} / 100
               </div>
             </div>
@@ -127,7 +190,14 @@ export default function ReportModal({ isOpen, reportData, onClose }) {
               <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
                 Verified findings
               </span>
-              <div style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', marginTop: '2px' }}>
+              <div
+                style={{
+                  fontSize: '16px',
+                  fontWeight: 600,
+                  color: 'var(--text-primary)',
+                  marginTop: '2px',
+                }}
+              >
                 {reportData.findings?.length || 0} items
               </div>
             </div>
@@ -137,7 +207,14 @@ export default function ReportModal({ isOpen, reportData, onClose }) {
         {/* Assessment Text */}
         {(reportData.explanation || reportData.summary) && (
           <div style={{ marginBottom: '16px' }}>
-            <h3 style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '4px' }}>
+            <h3
+              style={{
+                fontSize: '14px',
+                fontWeight: 600,
+                color: 'var(--text-primary)',
+                marginBottom: '4px',
+              }}
+            >
               Summary
             </h3>
             <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
@@ -149,7 +226,14 @@ export default function ReportModal({ isOpen, reportData, onClose }) {
         {/* Itemized Findings */}
         {reportData.findings && reportData.findings.length > 0 && (
           <div style={{ marginBottom: '16px' }}>
-            <h3 style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '8px' }}>
+            <h3
+              style={{
+                fontSize: '14px',
+                fontWeight: 600,
+                color: 'var(--text-primary)',
+                marginBottom: '8px',
+              }}
+            >
               Findings ({reportData.findings.length})
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
@@ -164,8 +248,20 @@ export default function ReportModal({ isOpen, reportData, onClose }) {
                     background: 'var(--bg-panel)',
                   }}
                 >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2px' }}>
-                    <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 500, color: 'var(--text-primary)' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      marginBottom: '2px',
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontFamily: 'var(--font-mono)',
+                        fontWeight: 500,
+                        color: 'var(--text-primary)',
+                      }}
+                    >
                       [{f.evidenceId}] {f.subtype || f.evidenceType || 'Signal'}
                     </span>
                     <span className={`severity-pill ${(f.severity || 'HIGH').toLowerCase()}`}>
@@ -182,7 +278,14 @@ export default function ReportModal({ isOpen, reportData, onClose }) {
         {/* Actionable Defense Checklist */}
         {reportData.checklist && reportData.checklist.length > 0 && (
           <div style={{ marginBottom: '16px' }}>
-            <h3 style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '6px' }}>
+            <h3
+              style={{
+                fontSize: '14px',
+                fontWeight: 600,
+                color: 'var(--text-primary)',
+                marginBottom: '6px',
+              }}
+            >
               Recommended actions
             </h3>
             <ul style={{ paddingLeft: '18px', fontSize: '13px', color: 'var(--text-secondary)' }}>
@@ -198,7 +301,14 @@ export default function ReportModal({ isOpen, reportData, onClose }) {
         {/* Masked Content */}
         {reportData.maskedPreview && (
           <div>
-            <h3 style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '4px' }}>
+            <h3
+              style={{
+                fontSize: '13px',
+                fontWeight: 600,
+                color: 'var(--text-secondary)',
+                marginBottom: '4px',
+              }}
+            >
               Masked payload
             </h3>
             <pre

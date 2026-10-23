@@ -6,12 +6,18 @@
 export const logger = {
   info(message, meta = {}) {
     const timestamp = new Date().toISOString();
-    console.log(`[${timestamp}] [INFO] ${message}`, Object.keys(meta).length > 0 ? JSON.stringify(meta) : '');
+    console.log(
+      `[${timestamp}] [INFO] ${message}`,
+      Object.keys(meta).length > 0 ? JSON.stringify(meta) : ''
+    );
   },
 
   warn(message, meta = {}) {
     const timestamp = new Date().toISOString();
-    console.warn(`[${timestamp}] [WARN] ${message}`, Object.keys(meta).length > 0 ? JSON.stringify(meta) : '');
+    console.warn(
+      `[${timestamp}] [WARN] ${message}`,
+      Object.keys(meta).length > 0 ? JSON.stringify(meta) : ''
+    );
   },
 
   error(message, error = null) {

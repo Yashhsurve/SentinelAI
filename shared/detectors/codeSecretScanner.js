@@ -128,7 +128,8 @@ export function scanCodeSecrets(code) {
   }
 
   // 5. Credential / Secret variable assignments
-  const secretAssignRegex = /(?:const|let|var|val|final)?\s*([a-zA-Z0-9_]*(?:secret|password|passwd|api_?key|auth_?token|client_?secret|jwt_?secret)[a-zA-Z0-9_]*)\s*[:=]\s*(["'])([^"'\r\n]+)\2/gi;
+  const secretAssignRegex =
+    /(?:const|let|var|val|final)?\s*([a-zA-Z0-9_]*(?:secret|password|passwd|api_?key|auth_?token|client_?secret|jwt_?secret)[a-zA-Z0-9_]*)\s*[:=]\s*(["'])([^"'\r\n]+)\2/gi;
   let assignMatch;
   while ((assignMatch = secretAssignRegex.exec(code)) !== null) {
     const varName = assignMatch[1];
@@ -136,7 +137,10 @@ export function scanCodeSecrets(code) {
     const line = getLineNumber(code, assignMatch.index);
 
     // Filter out dummy/mock placeholders e.g. "your_api_key_here", "dummy", "CHANGEME", empty
-    const isMock = /^(?:dummy|test|changeme|placeholder|your_?key|secret|password|xxx|\*{3,}|<[^>]+>|process\.env|env\.)/i.test(secretVal);
+    const isMock =
+      /^(?:dummy|test|changeme|placeholder|your_?key|secret|password|xxx|\*{3,}|<[^>]+>|process\.env|env\.)/i.test(
+        secretVal
+      );
     if (!isMock && secretVal.length >= 6) {
       evidence.push({
         id: `SEC-${String(counter++).padStart(2, '0')}`,
@@ -162,7 +166,12 @@ export function scanCodeSecrets(code) {
     if (detectedLines.has(line)) continue;
 
     // Ignore known non-secret patterns like long URLs or common English sentences
-    if (candidate.includes('http') || candidate.includes('xmlns') || candidate.includes('bootstrap')) continue;
+    if (
+      candidate.includes('http') ||
+      candidate.includes('xmlns') ||
+      candidate.includes('bootstrap')
+    )
+      continue;
 
     const entropy = calculateShannonEntropy(candidate);
     if (entropy >= 4.3) {

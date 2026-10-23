@@ -1,13 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import Icon from './Icon.jsx';
 
-export default function SessionHistory({
-  isOpen,
-  history = [],
-  onSelect,
-  onClear,
-  onClose,
-}) {
+export default function SessionHistory({ isOpen, history = [], onSelect, onClear, onClose }) {
   const modalRef = useRef(null);
 
   useEffect(() => {
@@ -46,10 +40,27 @@ export default function SessionHistory({
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="history-modal-title">
+    <div
+      className="modal-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="history-modal-title"
+    >
       <div ref={modalRef} className="modal-content">
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px', flexWrap: 'wrap', gap: '8px' }}>
-          <h2 id="history-modal-title" style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)' }}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginBottom: '14px',
+            flexWrap: 'wrap',
+            gap: '8px',
+          }}
+        >
+          <h2
+            id="history-modal-title"
+            style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)' }}
+          >
             Analysis history
           </h2>
           <div style={{ display: 'flex', gap: '8px' }}>
@@ -102,7 +113,14 @@ export default function SessionHistory({
                 }}
               >
                 <div style={{ flex: 1, minWidth: '220px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '3px' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      marginBottom: '3px',
+                    }}
+                  >
                     <strong style={{ fontSize: '14px', color: 'var(--text-primary)' }}>
                       {item.title}
                     </strong>

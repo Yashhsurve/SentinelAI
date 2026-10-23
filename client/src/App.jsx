@@ -106,7 +106,11 @@ export default function App() {
     const sample = SAMPLES[sampleKey];
     if (!sample) return;
 
-    if (sampleKey === 'scamMessage' || sampleKey === 'safeMessage' || sampleKey === 'promptInjection') {
+    if (
+      sampleKey === 'scamMessage' ||
+      sampleKey === 'safeMessage' ||
+      sampleKey === 'promptInjection'
+    ) {
       setActiveTab('messages');
       setMessageInput(sample.text);
       setAnnouncement(`Loaded sample: ${sample.label}`);
@@ -198,15 +202,9 @@ export default function App() {
         {/* Main Content Area */}
         <main id="main-content">
           {activeTab === 'messages' ? (
-            <ThreatLens
-              initialText={messageInput}
-              onSaveHistory={handleSaveHistory}
-            />
+            <ThreatLens initialText={messageInput} onSaveHistory={handleSaveHistory} />
           ) : (
-            <CodeShield
-              initialCode={codeInput}
-              onSaveHistory={handleSaveHistory}
-            />
+            <CodeShield initialCode={codeInput} onSaveHistory={handleSaveHistory} />
           )}
         </main>
 
@@ -226,7 +224,8 @@ export default function App() {
             <span>AI proposes, code verifies, nothing leaves your browser unmasked.</span>
           </div>
           <div style={{ color: 'var(--text-muted)', fontSize: '13px' }}>
-            Client-side privacy: Sensitive tokens, credentials, and numbers are masked in your browser prior to inspection.
+            Client-side privacy: Sensitive tokens, credentials, and numbers are masked in your
+            browser prior to inspection.
           </div>
         </footer>
 

@@ -7,7 +7,8 @@
 // Regex patterns for sensitive entity detection
 const PATTERNS = {
   // 1. Private Key Blocks (RSA, EC, DSA, PGP, OPENSSH)
-  privateKey: /-----BEGIN(?:[A-Z\s]+)?PRIVATE KEY-----[\s\S]*?-----END(?:[A-Z\s]+)?PRIVATE KEY-----/g,
+  privateKey:
+    /-----BEGIN(?:[A-Z\s]+)?PRIVATE KEY-----[\s\S]*?-----END(?:[A-Z\s]+)?PRIVATE KEY-----/g,
 
   // 2. AWS Access Key ID (20 alphanumeric starting with AKIA or ASIA)
   awsKey: /\b(AKIA|ASIA)[0-9A-Z]{16}\b/g,
@@ -16,10 +17,12 @@ const PATTERNS = {
   googleApiKey: /\bAIza[0-9A-Za-z\-_]{30,45}\b/g,
 
   // 4. GitHub Tokens
-  githubToken: /\b(ghp_[a-zA-Z0-9]{36}|github_pat_[a-zA-Z0-9_]{40,80}|gho_[a-zA-Z0-9]{36}|ghs_[a-zA-Z0-9]{36})\b/g,
+  githubToken:
+    /\b(ghp_[a-zA-Z0-9]{36}|github_pat_[a-zA-Z0-9_]{40,80}|gho_[a-zA-Z0-9]{36}|ghs_[a-zA-Z0-9]{36})\b/g,
 
   // 5. Generic API keys/tokens in variable assignments or headers (Bearer / secret=...)
-  keyValueSecret: /(?:\b(?:api[_-]?key|access[_-]?token|auth[_-]?token|client[_-]?secret|jwt[_-]?token|app[_-]?secret|password|passwd|pwd)\b\s*[:=]\s*["'])([^"'\r\n]{8,})(?:["'])/gi,
+  keyValueSecret:
+    /(?:\b(?:api[_-]?key|access[_-]?token|auth[_-]?token|client[_-]?secret|jwt[_-]?token|app[_-]?secret|password|passwd|pwd)\b\s*[:=]\s*["'])([^"'\r\n]{8,})(?:["'])/gi,
   bearerToken: /(?:Bearer\s+)([A-Za-z0-9\-_=]{20,})/g,
 
   // 6. Credit / Debit Card Numbers (13-19 digits, with spaces or hyphens)
@@ -35,7 +38,8 @@ const PATTERNS = {
   email: /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/g,
 
   // 10. Phone numbers (Indian +91 / 0 / 10-digit mobile, plus international formats)
-  phone: /(?:\+91[\s.-]?)?(?:\(?0\d{2,4}\)?[\s.-]?)?[6-9]\d{4}[\s.-]?\d{5}\b|(?:\+?1[\s.-]?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}\b/g,
+  phone:
+    /(?:\+91[\s.-]?)?(?:\(?0\d{2,4}\)?[\s.-]?)?[6-9]\d{4}[\s.-]?\d{5}\b|(?:\+?1[\s.-]?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}\b/g,
 };
 
 /**

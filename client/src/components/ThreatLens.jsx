@@ -34,7 +34,12 @@ export default function ThreatLens({ initialText = '', onSaveHistory = null }) {
 
   // Instant Client-Side Deterministic Scanner (Instant feedback)
   const clientDeterministic = useMemo(() => {
-    if (!text.trim()) return { evidence: [], riskScore: { score: 0, level: 'SAFE', breakdown: {} }, scamCategory: null };
+    if (!text.trim())
+      return {
+        evidence: [],
+        riskScore: { score: 0, level: 'SAFE', breakdown: {} },
+        scamCategory: null,
+      };
 
     const urls = detectUrlThreats(text);
     const tactics = detectManipulationTactics(text);
@@ -173,10 +178,18 @@ export default function ThreatLens({ initialText = '', onSaveHistory = null }) {
     setTimeout(() => setCopiedRewrite(false), 2000);
   };
 
-  const currentScore = analysisResult ? analysisResult.riskScore : clientDeterministic.riskScore.score;
-  const currentVerdict = analysisResult ? analysisResult.verdict : clientDeterministic.riskScore.level;
-  const currentCategory = analysisResult ? analysisResult.scamCategory : clientDeterministic.scamCategory;
-  const currentBreakdown = analysisResult ? analysisResult.scoreBreakdown : clientDeterministic.riskScore.breakdown;
+  const currentScore = analysisResult
+    ? analysisResult.riskScore
+    : clientDeterministic.riskScore.score;
+  const currentVerdict = analysisResult
+    ? analysisResult.verdict
+    : clientDeterministic.riskScore.level;
+  const currentCategory = analysisResult
+    ? analysisResult.scamCategory
+    : clientDeterministic.scamCategory;
+  const currentBreakdown = analysisResult
+    ? analysisResult.scoreBreakdown
+    : clientDeterministic.riskScore.breakdown;
   const activeFindings = analysisResult ? analysisResult.findings : clientDeterministic.evidence;
 
   return (
@@ -189,7 +202,10 @@ export default function ThreatLens({ initialText = '', onSaveHistory = null }) {
               <h2 className="card-title">Message input</h2>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <label htmlFor="lang-select" style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
+                <label
+                  htmlFor="lang-select"
+                  style={{ fontSize: '13px', color: 'var(--text-secondary)' }}
+                >
                   Language:
                 </label>
                 <select
@@ -218,7 +234,16 @@ export default function ThreatLens({ initialText = '', onSaveHistory = null }) {
               rows={6}
             />
 
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '12px', flexWrap: 'wrap', gap: '10px' }}>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginTop: '12px',
+                flexWrap: 'wrap',
+                gap: '10px',
+              }}
+            >
               <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
                 {text.length} characters • {text.trim() ? text.trim().split(/\s+/).length : 0} words
               </span>
@@ -244,25 +269,38 @@ export default function ThreatLens({ initialText = '', onSaveHistory = null }) {
               <div className="card-header">
                 <h3 className="card-title">Flagged phrases</h3>
                 {activeFindings.length > 0 && (
-                  <span className="status-chip danger">
-                    {activeFindings.length} flagged
-                  </span>
+                  <span className="status-chip danger">{activeFindings.length} flagged</span>
                 )}
               </div>
 
-              <div className="highlight-viewer-box" tabIndex={0} aria-label="Message with interactive threat highlights">
+              <div
+                className="highlight-viewer-box"
+                tabIndex={0}
+                aria-label="Message with interactive threat highlights"
+              >
                 {renderedMessageWithFlags}
               </div>
 
               {/* Active Hover / Focus Tooltip Details */}
               {activeTooltip && (
                 <div className="tooltip-card" role="tooltip">
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                    <span className="evidence-id-badge">{activeTooltip.id || activeTooltip.evidenceId}</span>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      marginBottom: '4px',
+                    }}
+                  >
+                    <span className="evidence-id-badge">
+                      {activeTooltip.id || activeTooltip.evidenceId}
+                    </span>
                     <strong style={{ color: 'var(--text-primary)' }}>
                       {activeTooltip.subtype || activeTooltip.type}
                     </strong>
-                    <span className={`severity-pill ${(activeTooltip.severity || 'HIGH').toLowerCase()}`}>
+                    <span
+                      className={`severity-pill ${(activeTooltip.severity || 'HIGH').toLowerCase()}`}
+                    >
                       {activeTooltip.severity || 'HIGH'}
                     </span>
                   </div>
@@ -289,11 +327,10 @@ export default function ThreatLens({ initialText = '', onSaveHistory = null }) {
                 </button>
               </div>
               <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '8px' }}>
-                Neutralized with bracketed domains so this message can be safely archived or forwarded.
+                Neutralized with bracketed domains so this message can be safely archived or
+                forwarded.
               </p>
-              <div className="defanged-box">
-                {analysisResult.defangedRewrite}
-              </div>
+              <div className="defanged-box">{analysisResult.defangedRewrite}</div>
             </div>
           )}
 
@@ -302,14 +339,14 @@ export default function ThreatLens({ initialText = '', onSaveHistory = null }) {
             <div className="card">
               <div className="card-header">
                 <h3 className="card-title">Recommended actions</h3>
-                <span className="badge-chip">
-                  National Helpline: 1930
-                </span>
+                <span className="badge-chip">National Helpline: 1930</span>
               </div>
               <div role="list">
                 {analysisResult.checklist.map((item, idx) => (
                   <div key={idx} className="checklist-item" role="listitem">
-                    <span style={{ color: 'var(--accent)', marginRight: '6px' }} aria-hidden="true">•</span>
+                    <span style={{ color: 'var(--accent)', marginRight: '6px' }} aria-hidden="true">
+                      •
+                    </span>
                     <span>{item}</span>
                   </div>
                 ))}
@@ -332,7 +369,9 @@ export default function ThreatLens({ initialText = '', onSaveHistory = null }) {
           {currentCategory && currentCategory.type !== 'none' && (
             <div className="card">
               <div className="card-header">
-                <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Threat category</span>
+                <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
+                  Threat category
+                </span>
                 <span className="status-chip warning">{currentCategory.label}</span>
               </div>
               <p style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>

@@ -2,7 +2,10 @@ import { describe, it, expect } from 'vitest';
 import { detectUrlThreats, levenshteinDistance } from '../shared/detectors/urlDetector.js';
 import { detectManipulationTactics } from '../shared/detectors/manipulationDetector.js';
 import { classifyScamType } from '../shared/detectors/scamClassifier.js';
-import { detectPromptInjection, wrapInPassiveDataEnvelope } from '../shared/detectors/promptInjectionDetector.js';
+import {
+  detectPromptInjection,
+  wrapInPassiveDataEnvelope,
+} from '../shared/detectors/promptInjectionDetector.js';
 
 describe('Levenshtein Distance Calculation', () => {
   it('correctly computes edit distance between lookalike strings', () => {
@@ -15,11 +18,16 @@ describe('Levenshtein Distance Calculation', () => {
 
 describe('URL Threat Detector', () => {
   it('detects brand typosquatting and lookalike domains', () => {
-    const text = 'Dear customer, update your wallet at https://paytmm.com/kyc or https://sbi-kyc-verify.com';
+    const text =
+      'Dear customer, update your wallet at https://paytmm.com/kyc or https://sbi-kyc-verify.com';
     const evidence = detectUrlThreats(text);
 
     expect(evidence.length).toBeGreaterThanOrEqual(1);
-    expect(evidence.some((e) => e.subtype === 'typosquatting_lookalike' || e.subtype === 'brand_impersonation')).toBe(true);
+    expect(
+      evidence.some(
+        (e) => e.subtype === 'typosquatting_lookalike' || e.subtype === 'brand_impersonation'
+      )
+    ).toBe(true);
   });
 
   it('detects Punycode homograph domain attacks', () => {
@@ -122,14 +130,16 @@ describe('Scam Type Classifier', () => {
   });
 
   it('classifies fake task and work-from-home jobs', () => {
-    const text = 'Earn Rs 5000 daily with part-time job! Like and subscribe YouTube videos on Telegram task.';
+    const text =
+      'Earn Rs 5000 daily with part-time job! Like and subscribe YouTube videos on Telegram task.';
     const result = classifyScamType(text);
 
     expect(result.category.type).toBe('fake_job');
   });
 
   it('classifies failed parcel delivery courier scams', () => {
-    const text = 'India Post alert: Your parcel delivery failed due to incomplete address. Reschedule delivery.';
+    const text =
+      'India Post alert: Your parcel delivery failed due to incomplete address. Reschedule delivery.';
     const result = classifyScamType(text);
 
     expect(result.category.type).toBe('parcel_delivery');

@@ -61,12 +61,13 @@ app.use(
 // 3. Rate Limiter (Defense against DoS and API abuse)
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 120,                 // Limit each IP to 120 requests per window
+  max: 120, // Limit each IP to 120 requests per window
   standardHeaders: true,
   legacyHeaders: false,
   message: {
     error: 'Rate limit exceeded',
-    message: 'Too many security scan requests from this IP address. Please try again in 15 minutes.',
+    message:
+      'Too many security scan requests from this IP address. Please try again in 15 minutes.',
   },
 });
 
@@ -96,9 +97,10 @@ app.use((err, req, res, next) => {
   const status = err.status || 500;
   res.status(status).json({
     error: 'Security Gateway Error',
-    message: config.nodeEnv === 'production'
-      ? 'An unexpected error occurred during analysis.'
-      : err.message || 'Internal server error',
+    message:
+      config.nodeEnv === 'production'
+        ? 'An unexpected error occurred during analysis.'
+        : err.message || 'Internal server error',
   });
 });
 
@@ -106,7 +108,9 @@ app.use((err, req, res, next) => {
 if (process.env.NODE_ENV !== 'test') {
   app.listen(config.port, () => {
     logger.info(`🛡️ SentinelAI Security Server active on port ${config.port}`);
-    logger.info(`Operating Mode: ${config.isDemoMode ? 'Demo Mode (Deterministic Rule Engine)' : 'Live Mode (Gemini GenAI Active)'}`);
+    logger.info(
+      `Operating Mode: ${config.isDemoMode ? 'Demo Mode (Deterministic Rule Engine)' : 'Live Mode (Gemini GenAI Active)'}`
+    );
     logger.info(`Model: ${config.geminiModel}`);
   });
 }

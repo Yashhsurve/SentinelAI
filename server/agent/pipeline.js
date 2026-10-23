@@ -12,10 +12,17 @@ import { detectManipulationTactics } from '../../shared/detectors/manipulationDe
 import { classifyScamType } from '../../shared/detectors/scamClassifier.js';
 import { scanCodeSecrets } from '../../shared/detectors/codeSecretScanner.js';
 import { scanCodeVulnerabilities } from '../../shared/detectors/codeVulnerabilityScanner.js';
-import { detectPromptInjection, wrapInPassiveDataEnvelope } from '../../shared/detectors/promptInjectionDetector.js';
+import {
+  detectPromptInjection,
+  wrapInPassiveDataEnvelope,
+} from '../../shared/detectors/promptInjectionDetector.js';
 import { calculateMessageRiskScore, calculateCodeSecurityScore } from '../../shared/scoring.js';
 import { verifyAiClaims } from '../../shared/verifier.js';
-import { callGeminiStructured, MESSAGE_RESPONSE_SCHEMA, CODE_RESPONSE_SCHEMA } from './geminiClient.js';
+import {
+  callGeminiStructured,
+  MESSAGE_RESPONSE_SCHEMA,
+  CODE_RESPONSE_SCHEMA,
+} from './geminiClient.js';
 import { generateMessageFallback, generateCodeFallback } from './fallbackReasoner.js';
 import { config } from '../config.js';
 import { logger } from '../utils/logger.js';
@@ -76,10 +83,20 @@ export async function runMessagePipeline({ text, language = 'en', clientMaskCoun
   if (config.isDemoMode) {
     aiOutput = generateMessageFallback(maskedText, deterministicEvidence, riskScore, language);
     isFallback = true;
-    recordStep('REASON', 'FALLBACK', reasonStart, 'Demo Mode active (no GEMINI_API_KEY) - generated deterministic rule explanation');
+    recordStep(
+      'REASON',
+      'FALLBACK',
+      reasonStart,
+      'Demo Mode active (no GEMINI_API_KEY) - generated deterministic rule explanation'
+    );
   } else {
     try {
-      const evidenceSummary = deterministicEvidence.map((e) => `ID: ${e.id} | Type: ${e.type}/${e.subtype || 'general'} | Severity: ${e.severity} | Details: ${e.details}`).join('\n');
+      const evidenceSummary = deterministicEvidence
+        .map(
+          (e) =>
+            `ID: ${e.id} | Type: ${e.type}/${e.subtype || 'general'} | Severity: ${e.severity} | Details: ${e.details}`
+        )
+        .join('\n');
       const envelopedData = wrapInPassiveDataEnvelope(maskedText, 'MASKED_USER_MESSAGE');
 
       const systemPrompt = `You are SentinelAI Security Investigator (ThreatLens).
@@ -97,12 +114,24 @@ DATA:
 ${envelopedData}`;
 
       aiOutput = await callGeminiStructured(systemPrompt, MESSAGE_RESPONSE_SCHEMA);
-      recordStep('REASON', 'SUCCESS', reasonStart, `Gemini reasoning completed (${config.geminiModel})`);
+      recordStep(
+        'REASON',
+        'SUCCESS',
+        reasonStart,
+        `Gemini reasoning completed (${config.geminiModel})`
+      );
     } catch (err) {
-      logger.warn(`Gemini API reasoning failed: ${err.message}. Falling back to deterministic rule reasoner.`);
+      logger.warn(
+        `Gemini API reasoning failed: ${err.message}. Falling back to deterministic rule reasoner.`
+      );
       aiOutput = generateMessageFallback(maskedText, deterministicEvidence, riskScore, language);
       isFallback = true;
-      recordStep('REASON', 'FALLBACK', reasonStart, `AI call failed (${err.message}) - fallback rule engine engaged`);
+      recordStep(
+        'REASON',
+        'FALLBACK',
+        reasonStart,
+        `AI call failed (${err.message}) - fallback rule engine engaged`
+      );
     }
   }
 
@@ -114,7 +143,12 @@ ${envelopedData}`;
   // 5. REPORT
   const reportStart = Date.now();
   const totalPipelineMs = Date.now() - pipelineStart;
-  recordStep('REPORT', 'SUCCESS', reportStart, `Synthesized security report in ${totalPipelineMs}ms`);
+  recordStep(
+    'REPORT',
+    'SUCCESS',
+    reportStart,
+    `Synthesized security report in ${totalPipelineMs}ms`
+  );
 
   return {
     module: 'ThreatLens',
@@ -156,11 +190,7 @@ export async function runCodePipeline({ code, language = 'en', clientMaskCounts 
   const vulnerabilities = scanCodeVulnerabilities(code);
   const promptInjection = detectPromptInjection(code);
 
-  const deterministicEvidence = [
-    ...secrets,
-    ...vulnerabilities,
-    ...promptInjection,
-  ];
+  const deterministicEvidence = [...secrets, ...vulnerabilities, ...promptInjection];
 
   const securityScore = calculateCodeSecurityScore(deterministicEvidence);
   recordStep(
@@ -189,10 +219,20 @@ export async function runCodePipeline({ code, language = 'en', clientMaskCounts 
   if (config.isDemoMode) {
     aiOutput = generateCodeFallback(maskedCode, deterministicEvidence, securityScore);
     isFallback = true;
-    recordStep('REASON', 'FALLBACK', reasonStart, 'Demo Mode active (no GEMINI_API_KEY) - generated rule-based fixes and explanations');
+    recordStep(
+      'REASON',
+      'FALLBACK',
+      reasonStart,
+      'Demo Mode active (no GEMINI_API_KEY) - generated rule-based fixes and explanations'
+    );
   } else {
     try {
-      const evidenceSummary = deterministicEvidence.map((e) => `ID: ${e.id} | Line: ${e.lineNumber || 'N/A'} | Type: ${e.type}/${e.subtype} | Severity: ${e.severity} | Snippet: ${e.snippet} | Rule: ${e.details}`).join('\n');
+      const evidenceSummary = deterministicEvidence
+        .map(
+          (e) =>
+            `ID: ${e.id} | Line: ${e.lineNumber || 'N/A'} | Type: ${e.type}/${e.subtype} | Severity: ${e.severity} | Snippet: ${e.snippet} | Rule: ${e.details}`
+        )
+        .join('\n');
       const envelopedCode = wrapInPassiveDataEnvelope(maskedCode, 'MASKED_SOURCE_CODE');
 
       const systemPrompt = `You are SentinelAI CodeShield Security Auditor.
@@ -209,12 +249,22 @@ CODE:
 ${envelopedCode}`;
 
       aiOutput = await callGeminiStructured(systemPrompt, CODE_RESPONSE_SCHEMA);
-      recordStep('REASON', 'SUCCESS', reasonStart, `Gemini code reasoning completed (${config.geminiModel})`);
+      recordStep(
+        'REASON',
+        'SUCCESS',
+        reasonStart,
+        `Gemini code reasoning completed (${config.geminiModel})`
+      );
     } catch (err) {
       logger.warn(`Gemini Code reasoning failed: ${err.message}. Falling back to rule engine.`);
       aiOutput = generateCodeFallback(maskedCode, deterministicEvidence, securityScore);
       isFallback = true;
-      recordStep('REASON', 'FALLBACK', reasonStart, `AI call failed (${err.message}) - fallback rule engine engaged`);
+      recordStep(
+        'REASON',
+        'FALLBACK',
+        reasonStart,
+        `AI call failed (${err.message}) - fallback rule engine engaged`
+      );
     }
   }
 
@@ -226,7 +276,12 @@ ${envelopedCode}`;
   // 5. REPORT
   const reportStart = Date.now();
   const totalPipelineMs = Date.now() - pipelineStart;
-  recordStep('REPORT', 'SUCCESS', reportStart, `Compiled code security audit report in ${totalPipelineMs}ms`);
+  recordStep(
+    'REPORT',
+    'SUCCESS',
+    reportStart,
+    `Compiled code security audit report in ${totalPipelineMs}ms`
+  );
 
   return {
     module: 'CodeShield',

@@ -17,7 +17,15 @@ export default function MaskedPreview({ maskResult }) {
 
   return (
     <div className="card" style={{ padding: '14px 16px' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px' }}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '10px',
+        }}
+      >
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <span style={{ fontWeight: 600, color: 'var(--text-primary)', fontSize: '14px' }}>
@@ -32,10 +40,14 @@ export default function MaskedPreview({ maskResult }) {
           <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '6px' }}>
             {counts.email > 0 && <span className="severity-pill low">{counts.email} email</span>}
             {counts.phone > 0 && <span className="severity-pill low">{counts.phone} phone</span>}
-            {counts.aadhaar > 0 && <span className="severity-pill medium">{counts.aadhaar} Aadhaar</span>}
+            {counts.aadhaar > 0 && (
+              <span className="severity-pill medium">{counts.aadhaar} Aadhaar</span>
+            )}
             {counts.pan > 0 && <span className="severity-pill medium">{counts.pan} PAN</span>}
             {counts.card > 0 && <span className="severity-pill critical">{counts.card} card</span>}
-            {counts.secret > 0 && <span className="severity-pill critical">{counts.secret} credential</span>}
+            {counts.secret > 0 && (
+              <span className="severity-pill critical">{counts.secret} credential</span>
+            )}
           </div>
         </div>
 

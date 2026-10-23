@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import Icon from './Icon.jsx';
 
-export default function EvidenceCard({
-  finding,
-  onVerifyFix = null,
-  onApplyFix = null,
-}) {
+export default function EvidenceCard({ finding, onVerifyFix = null, onApplyFix = null }) {
   const [expanded, setExpanded] = useState(false);
 
   const id = finding.evidenceId || finding.id || 'FINDING';
-  const description = finding.explanation || finding.details || finding.ruleDetails || finding.subtype || finding.type;
+  const description =
+    finding.explanation ||
+    finding.details ||
+    finding.ruleDetails ||
+    finding.subtype ||
+    finding.type;
 
   const {
     severity = 'HIGH',
@@ -26,8 +27,10 @@ export default function EvidenceCard({
   const whereText = lineNumber
     ? `Line ${lineNumber}`
     : text
-    ? (text.length > 20 ? `${text.slice(0, 20)}...` : text)
-    : '—';
+      ? text.length > 20
+        ? `${text.slice(0, 20)}...`
+        : text
+      : '—';
 
   return (
     <div className="finding-row">
@@ -50,29 +53,50 @@ export default function EvidenceCard({
           <span className={`severity-pill ${sevLower}`}>{severity}</span>
         </span>
         <span className="finding-what">{description}</span>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'flex-end' }}>
+        <div
+          style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'flex-end' }}
+        >
           <span className="finding-where">{whereText}</span>
-          <Icon name={expanded ? 'chevron-up' : 'chevron-down'} size={14} className="text-secondary" />
+          <Icon
+            name={expanded ? 'chevron-up' : 'chevron-down'}
+            size={14}
+            className="text-secondary"
+          />
         </div>
       </div>
 
       {expanded && (
         <div id={`finding-details-${id}`} className="finding-details">
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px', flexWrap: 'wrap', gap: '8px' }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginBottom: '8px',
+              flexWrap: 'wrap',
+              gap: '8px',
+            }}
+          >
             <span style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-primary)' }}>
               Details
             </span>
             {groundTruthVerified && (
-              <span style={{ fontSize: '13px', color: 'var(--status-success-text)', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+              <span
+                style={{
+                  fontSize: '13px',
+                  color: 'var(--status-success-text)',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                }}
+              >
                 <Icon name="check" size={13} />
                 <span>Verified against code scanner</span>
               </span>
             )}
           </div>
 
-          <p style={{ color: 'var(--text-primary)', marginBottom: '8px' }}>
-            {description}
-          </p>
+          <p style={{ color: 'var(--text-primary)', marginBottom: '8px' }}>{description}</p>
 
           {ruleDetails && ruleDetails !== explanation && (
             <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '8px' }}>
@@ -80,15 +104,26 @@ export default function EvidenceCard({
             </p>
           )}
 
-          {(snippet || text) && (
-            <div className="evidence-snippet">
-              {snippet || text}
-            </div>
-          )}
+          {(snippet || text) && <div className="evidence-snippet">{snippet || text}</div>}
 
           {suggestedFix && (
-            <div style={{ marginTop: '12px', paddingTop: '10px', borderTop: '1px solid var(--border-color)' }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px', flexWrap: 'wrap', gap: '8px' }}>
+            <div
+              style={{
+                marginTop: '12px',
+                paddingTop: '10px',
+                borderTop: '1px solid var(--border-color)',
+              }}
+            >
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  marginBottom: '8px',
+                  flexWrap: 'wrap',
+                  gap: '8px',
+                }}
+              >
                 <span style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)' }}>
                   Suggested remediation
                 </span>

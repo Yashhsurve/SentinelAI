@@ -77,7 +77,9 @@ export function verifyAiClaims(aiFindings = [], deterministicEvidence = []) {
     if (!coveredIds.has(id)) {
       verifiedFindings.push({
         evidenceId: id,
-        explanation: evidence.details || `Deterministic ${evidence.type} alert (${evidence.subtype || 'general'})`,
+        explanation:
+          evidence.details ||
+          `Deterministic ${evidence.type} alert (${evidence.subtype || 'general'})`,
         severity: evidence.severity,
         groundTruthVerified: true,
         isDeterministicFallback: true,
@@ -93,9 +95,10 @@ export function verifyAiClaims(aiFindings = [], deterministicEvidence = []) {
   }
 
   const unsupportedCount = droppedClaims.length;
-  const traceNote = unsupportedCount > 0
-    ? `${unsupportedCount} unsupported AI claims removed (anti-hallucination shield)`
-    : `All ${verifiedFindings.length} findings verified against deterministic evidence`;
+  const traceNote =
+    unsupportedCount > 0
+      ? `${unsupportedCount} unsupported AI claims removed (anti-hallucination shield)`
+      : `All ${verifiedFindings.length} findings verified against deterministic evidence`;
 
   return {
     verifiedFindings,

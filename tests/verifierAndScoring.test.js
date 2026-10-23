@@ -6,12 +6,28 @@ import { LruCache } from '../server/utils/cache.js';
 describe('Anti-Hallucination Evidence Verifier', () => {
   it('retains and enriches AI findings that reference valid deterministic evidence IDs', () => {
     const deterministicEvidence = [
-      { id: 'URL-01', type: 'url_analysis', subtype: 'brand_impersonation', severity: 'CRITICAL', details: 'Spoofed SBI portal' },
-      { id: 'TACTIC-01', type: 'manipulation_tactic', subtype: 'urgency', severity: 'HIGH', details: '24hr countdown' },
+      {
+        id: 'URL-01',
+        type: 'url_analysis',
+        subtype: 'brand_impersonation',
+        severity: 'CRITICAL',
+        details: 'Spoofed SBI portal',
+      },
+      {
+        id: 'TACTIC-01',
+        type: 'manipulation_tactic',
+        subtype: 'urgency',
+        severity: 'HIGH',
+        details: '24hr countdown',
+      },
     ];
 
     const aiFindings = [
-      { evidenceId: 'URL-01', explanation: 'Attacker spoofed the legitimate SBI domain', severity: 'CRITICAL' },
+      {
+        evidenceId: 'URL-01',
+        explanation: 'Attacker spoofed the legitimate SBI domain',
+        severity: 'CRITICAL',
+      },
     ];
 
     const result = verifyAiClaims(aiFindings, deterministicEvidence);
@@ -25,12 +41,26 @@ describe('Anti-Hallucination Evidence Verifier', () => {
 
   it('DROPS AI findings with non-existent or hallucinated evidence IDs', () => {
     const deterministicEvidence = [
-      { id: 'URL-01', type: 'url_analysis', subtype: 'brand_impersonation', severity: 'CRITICAL', details: 'Fake site' },
+      {
+        id: 'URL-01',
+        type: 'url_analysis',
+        subtype: 'brand_impersonation',
+        severity: 'CRITICAL',
+        details: 'Fake site',
+      },
     ];
 
     const aiFindingsWithHallucination = [
-      { evidenceId: 'URL-01', explanation: 'Legitimate SBI spoofing detected', severity: 'CRITICAL' },
-      { evidenceId: 'FAKE-99', explanation: 'Hallucinated claim with no evidence', severity: 'HIGH' },
+      {
+        evidenceId: 'URL-01',
+        explanation: 'Legitimate SBI spoofing detected',
+        severity: 'CRITICAL',
+      },
+      {
+        evidenceId: 'FAKE-99',
+        explanation: 'Hallucinated claim with no evidence',
+        severity: 'HIGH',
+      },
       { evidenceId: null, explanation: 'Unanchored claim', severity: 'MEDIUM' },
     ];
 
@@ -38,7 +68,9 @@ describe('Anti-Hallucination Evidence Verifier', () => {
 
     expect(result.unsupportedCount).toBe(2);
     expect(result.droppedClaims.length).toBe(2);
-    expect(result.traceNote).toContain('2 unsupported AI claims removed (anti-hallucination shield)');
+    expect(result.traceNote).toContain(
+      '2 unsupported AI claims removed (anti-hallucination shield)'
+    );
     expect(result.verifiedFindings.some((f) => f.evidenceId === 'FAKE-99')).toBe(false);
   });
 });
@@ -47,7 +79,12 @@ describe('Deterministic Scoring Engine', () => {
   it('calculates bounded risk score (0-100) and factors for messages', () => {
     const evidenceList = [
       { id: 'URL-01', type: 'url_analysis', subtype: 'brand_impersonation', severity: 'CRITICAL' },
-      { id: 'TACTIC-01', type: 'manipulation_tactic', subtype: 'credential_request', severity: 'CRITICAL' },
+      {
+        id: 'TACTIC-01',
+        type: 'manipulation_tactic',
+        subtype: 'credential_request',
+        severity: 'CRITICAL',
+      },
       { id: 'TACTIC-02', type: 'manipulation_tactic', subtype: 'fear_threat', severity: 'HIGH' },
     ];
 

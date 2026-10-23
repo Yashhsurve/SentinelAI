@@ -34,7 +34,10 @@ export default function CodeShield({ initialCode = '', onSaveHistory = null }) {
   // Instant Client-Side Deterministic Scanner
   const clientDeterministic = useMemo(() => {
     if (!code.trim()) {
-      return { evidence: [], securityScore: { score: 100, grade: 'A', status: 'SECURE', deductions: [] } };
+      return {
+        evidence: [],
+        securityScore: { score: 100, grade: 'A', status: 'SECURE', deductions: [] },
+      };
     }
 
     const secrets = scanCodeSecrets(code);
@@ -182,8 +185,12 @@ export default function CodeShield({ initialCode = '', onSaveHistory = null }) {
     }
   };
 
-  const currentScore = analysisResult ? analysisResult.securityScore : clientDeterministic.securityScore.score;
-  const currentGrade = analysisResult ? analysisResult.grade : clientDeterministic.securityScore.grade;
+  const currentScore = analysisResult
+    ? analysisResult.securityScore
+    : clientDeterministic.securityScore.score;
+  const currentGrade = analysisResult
+    ? analysisResult.grade
+    : clientDeterministic.securityScore.grade;
 
   return (
     <section id="panel-code" role="tabpanel" aria-labelledby="tab-code">
@@ -228,8 +235,23 @@ export default function CodeShield({ initialCode = '', onSaveHistory = null }) {
               spellCheck="false"
             />
 
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '12px', flexWrap: 'wrap', gap: '10px' }}>
-              <span style={{ fontSize: '13px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginTop: '12px',
+                flexWrap: 'wrap',
+                gap: '10px',
+              }}
+            >
+              <span
+                style={{
+                  fontSize: '13px',
+                  color: 'var(--text-muted)',
+                  fontFamily: 'var(--font-mono)',
+                }}
+              >
                 {code.split('\n').length} lines • {code.length} chars
               </span>
 
@@ -268,20 +290,21 @@ export default function CodeShield({ initialCode = '', onSaveHistory = null }) {
                   const issuesOnLine = lineIssueMap.get(lineNum);
                   const hasIssue = Boolean(issuesOnLine && issuesOnLine.length > 0);
                   const highestSev = hasIssue ? issuesOnLine[0].severity : null;
-                  const sevType = highestSev === 'CRITICAL' ? 'danger' : highestSev === 'HIGH' ? 'warning' : 'info';
+                  const sevType =
+                    highestSev === 'CRITICAL'
+                      ? 'danger'
+                      : highestSev === 'HIGH'
+                        ? 'warning'
+                        : 'info';
 
                   return (
                     <div
                       key={lineNum}
                       className={`code-line ${hasIssue ? `has-issue ${sevType}` : ''}`}
                     >
-                      <span className="code-line-number">
-                        {lineNum}
-                      </span>
+                      <span className="code-line-number">{lineNum}</span>
 
-                      <span className="code-line-text">
-                        {lineText || ' '}
-                      </span>
+                      <span className="code-line-text">{lineText || ' '}</span>
 
                       {hasIssue && (
                         <span

@@ -27,7 +27,8 @@ export const MESSAGE_RESPONSE_SCHEMA = {
     },
     explanation: {
       type: 'STRING',
-      description: 'Clear, plain-language breakdown of the security findings in the requested language',
+      description:
+        'Clear, plain-language breakdown of the security findings in the requested language',
     },
     findings: {
       type: 'ARRAY',
@@ -37,7 +38,8 @@ export const MESSAGE_RESPONSE_SCHEMA = {
         properties: {
           evidenceId: {
             type: 'STRING',
-            description: 'The exact deterministic evidence ID this finding grounds on (e.g. URL-01, TACTIC-01)',
+            description:
+              'The exact deterministic evidence ID this finding grounds on (e.g. URL-01, TACTIC-01)',
           },
           explanation: {
             type: 'STRING',
@@ -53,12 +55,14 @@ export const MESSAGE_RESPONSE_SCHEMA = {
     },
     checklist: {
       type: 'ARRAY',
-      description: 'Actionable emergency steps to protect oneself, including Indian cyber helpline 1930 and cybercrime.gov.in',
+      description:
+        'Actionable emergency steps to protect oneself, including Indian cyber helpline 1930 and cybercrime.gov.in',
       items: { type: 'STRING' },
     },
     defangedRewrite: {
       type: 'STRING',
-      description: 'Defanged, safe-to-share version of the message with URLs neutralized (e.g. hxxp://...) and sensitive entities masked',
+      description:
+        'Defanged, safe-to-share version of the message with URLs neutralized (e.g. hxxp://...) and sensitive entities masked',
     },
   },
   required: ['verdict', 'explanation', 'findings', 'checklist', 'defangedRewrite'],
@@ -94,7 +98,8 @@ export const CODE_RESPONSE_SCHEMA = {
           },
           suggestedFix: {
             type: 'STRING',
-            description: 'Concrete, production-ready replacement code that resolves the vulnerability without side-effects',
+            description:
+              'Concrete, production-ready replacement code that resolves the vulnerability without side-effects',
           },
         },
         required: ['evidenceId', 'explanation', 'severity', 'suggestedFix'],
@@ -143,7 +148,9 @@ export async function callGeminiStructured(prompt, schema, maxRetries = 2) {
       attempt++;
       if (attempt <= maxRetries) {
         const backoffMs = Math.pow(2, attempt) * 800;
-        logger.warn(`Gemini call failed (attempt ${attempt}/${maxRetries}), retrying in ${backoffMs}ms...`);
+        logger.warn(
+          `Gemini call failed (attempt ${attempt}/${maxRetries}), retrying in ${backoffMs}ms...`
+        );
         await new Promise((resolve) => setTimeout(resolve, backoffMs));
       }
     }

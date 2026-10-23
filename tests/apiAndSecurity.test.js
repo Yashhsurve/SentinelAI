@@ -7,9 +7,14 @@ vi.mock('../server/agent/geminiClient.js', () => ({
     if (schema?.properties?.verdict) {
       return {
         verdict: 'SCAM',
-        explanation: 'Mocked Gemini: High risk phishing detected with spoofed URL and urgency coercion.',
+        explanation:
+          'Mocked Gemini: High risk phishing detected with spoofed URL and urgency coercion.',
         findings: [
-          { evidenceId: 'URL-01', explanation: 'Spoofed lookalike brand domain', severity: 'CRITICAL' },
+          {
+            evidenceId: 'URL-01',
+            explanation: 'Spoofed lookalike brand domain',
+            severity: 'CRITICAL',
+          },
           { evidenceId: 'TACTIC-01', explanation: 'Artificial urgency coercion', severity: 'HIGH' },
           { evidenceId: 'TACTIC-02', explanation: 'Direct OTP harvesting', severity: 'CRITICAL' },
         ],
@@ -36,7 +41,8 @@ vi.mock('../server/agent/geminiClient.js', () => ({
           evidenceId: 'VULN-01',
           explanation: 'SQL injection flaw',
           severity: 'CRITICAL',
-          suggestedFix: 'const res = await db.query("SELECT * FROM users WHERE id = $1", [userId]);',
+          suggestedFix:
+            'const res = await db.query("SELECT * FROM users WHERE id = $1", [userId]);',
         },
         {
           evidenceId: 'VULN-02',
@@ -66,12 +72,10 @@ describe('SentinelAI API Endpoints (Gemini Mocked)', () => {
   });
 
   it('POST /api/analyze-message processes message and returns ThreatLens report', async () => {
-    const res = await request(app)
-      .post('/api/analyze-message')
-      .send({
-        text: 'Dear user, your SBI account will be blocked today! Visit https://paytmm.com/verify to enter your OTP immediately.',
-        language: 'en',
-      });
+    const res = await request(app).post('/api/analyze-message').send({
+      text: 'Dear user, your SBI account will be blocked today! Visit https://paytmm.com/verify to enter your OTP immediately.',
+      language: 'en',
+    });
 
     expect(res.status).toBe(200);
     expect(res.body.module).toBe('ThreatLens');
@@ -84,12 +88,10 @@ describe('SentinelAI API Endpoints (Gemini Mocked)', () => {
   });
 
   it('POST /api/analyze-message rejects invalid payloads with 400 status', async () => {
-    const res = await request(app)
-      .post('/api/analyze-message')
-      .send({
-        text: '', // Empty text
-        language: 'invalid_lang',
-      });
+    const res = await request(app).post('/api/analyze-message').send({
+      text: '', // Empty text
+      language: 'invalid_lang',
+    });
 
     expect(res.status).toBe(400);
     expect(res.body.error).toBe('Validation failed');
@@ -101,12 +103,10 @@ const apiKey = "AKIAIOSFODNN7EXAMPLE";
 const query = "SELECT * FROM users WHERE id = " + userId;
 function run(code) { return eval(code); }
 `;
-    const res = await request(app)
-      .post('/api/analyze-code')
-      .send({
-        code: vulnerableSnippet,
-        language: 'en',
-      });
+    const res = await request(app).post('/api/analyze-code').send({
+      code: vulnerableSnippet,
+      language: 'en',
+    });
 
     expect(res.status).toBe(200);
     expect(res.body.module).toBe('CodeShield');
@@ -119,12 +119,10 @@ function run(code) { return eval(code); }
     const originalCode = 'const res = eval(userExpr);';
     const fixedCode = 'const res = JSON.parse(userExpr);';
 
-    const res = await request(app)
-      .post('/api/verify-fix')
-      .send({
-        originalCode,
-        fixedCode,
-      });
+    const res = await request(app).post('/api/verify-fix').send({
+      originalCode,
+      fixedCode,
+    });
 
     expect(res.status).toBe(200);
     expect(res.body.original.issuesCount).toBe(1);
@@ -137,9 +135,7 @@ function run(code) { return eval(code); }
     const rawSecret = 'AKIAIOSFODNN7EXAMPLE';
     const payload = `const key = "${rawSecret}";`;
 
-    const res = await request(app)
-      .post('/api/analyze-code')
-      .send({ code: payload });
+    const res = await request(app).post('/api/analyze-code').send({ code: payload });
 
     expect(res.status).toBe(200);
     expect(res.body.maskedPreview).toContain('[AWS_KEY_');

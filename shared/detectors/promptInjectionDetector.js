@@ -8,19 +8,23 @@ const INJECTION_PATTERNS = [
   {
     name: 'instruction_override',
     severity: 'HIGH',
-    pattern: /\b(?:ignore|disregard|forget|override|bypass)\s+(?:all\s+)?(?:previous|prior|above|system)\s+(?:instructions|prompts?|rules?|commands?|directives?)\b/gi,
+    pattern:
+      /\b(?:ignore|disregard|forget|override|bypass)\s+(?:all\s+)?(?:previous|prior|above|system)\s+(?:instructions|prompts?|rules?|commands?|directives?)\b/gi,
     details: 'Adversarial instruction override attempting to reset LLM system constraints.',
   },
   {
     name: 'roleplay_jailbreak',
     severity: 'HIGH',
-    pattern: /\b(?:you\s+are\s+now|act\s+as|pretend\s+to\s+be)\s+(?:DAN|an\s+unrestricted|a\s+hacked|an\s+evil|jailbroken|unfiltered)\b/gi,
-    details: 'Persona adoption or jailbreak exploit designed to bypass ethical and security guardrails.',
+    pattern:
+      /\b(?:you\s+are\s+now|act\s+as|pretend\s+to\s+be)\s+(?:DAN|an\s+unrestricted|a\s+hacked|an\s+evil|jailbroken|unfiltered)\b/gi,
+    details:
+      'Persona adoption or jailbreak exploit designed to bypass ethical and security guardrails.',
   },
   {
     name: 'system_prompt_leak',
     severity: 'HIGH',
-    pattern: /\b(?:reveal|show|print|output|display|repeat)\s+(?:your\s+)?(?:system\s+prompt|initial\s+instructions|hidden\s+rules|developer\s+guidelines)\b/gi,
+    pattern:
+      /\b(?:reveal|show|print|output|display|repeat)\s+(?:your\s+)?(?:system\s+prompt|initial\s+instructions|hidden\s+rules|developer\s+guidelines)\b/gi,
     details: 'Information disclosure probe attempting to extract confidential system instructions.',
   },
   {

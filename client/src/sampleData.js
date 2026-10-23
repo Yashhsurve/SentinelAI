@@ -9,7 +9,8 @@ export const SAMPLES = {
     label: 'Scam SMS: SBI/UPI KYC trap',
     text: `SBI Alert: Dear customer, your YONO SBI netbanking and debit card will be BLOCKED today within 24 hours due to pending KYC update! To avoid immediate account suspension and police penalty, click here to update your PAN & Aadhaar details: http://sbi-kyc-verify.xyz/login. Do not ignore. Please enter your 6-digit OTP when prompted to reactivate your khata. Helpdesk: 9876543210.`,
     language: 'en',
-    description: 'Realistic UPI/KYC fraud with urgency, fear tactics, lookalike domain, and direct OTP solicitation.',
+    description:
+      'Realistic UPI/KYC fraud with urgency, fear tactics, lookalike domain, and direct OTP solicitation.',
   },
 
   safeMessage: {
@@ -17,7 +18,8 @@ export const SAMPLES = {
     label: 'Safe SMS: India Post tracking',
     text: `India Post: Your consignment EF123456789IN is scheduled for delivery today by your postman. Track official status at https://www.indiapost.gov.in. Note: India Post never asks for OTP, PIN, or fee payments via SMS. For inquiries, contact your local sub-post office.`,
     language: 'en',
-    description: 'Genuine postal notification on verified .gov.in domain with explicit anti-scam reminder.',
+    description:
+      'Genuine postal notification on verified .gov.in domain with explicit anti-scam reminder.',
   },
 
   vulnerableCode: {
@@ -70,7 +72,8 @@ function generateSessionToken() {
 
 app.listen(3000);`,
     language: 'en',
-    description: 'Real-world OWASP Top 10 vulnerabilities: hardcoded AWS/Google secrets, SQL injection, eval RCE, disabled TLS, wildcard CORS, MD5, and Math.random.',
+    description:
+      'Real-world OWASP Top 10 vulnerabilities: hardcoded AWS/Google secrets, SQL injection, eval RCE, disabled TLS, wildcard CORS, MD5, and Math.random.',
   },
 
   promptInjection: {

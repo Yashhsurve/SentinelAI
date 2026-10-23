@@ -12,10 +12,7 @@ import { LruCache } from '../server/utils/cache.js';
 describe('Edge Case Polish Suite (8 Required Robustness Tests)', () => {
   // 1. Empty input
   it('handles empty input gracefully across message and code detectors without throwing', () => {
-    const emptyMsgEvidence = [
-      ...detectUrlThreats(''),
-      ...detectManipulationTactics(''),
-    ];
+    const emptyMsgEvidence = [...detectUrlThreats(''), ...detectManipulationTactics('')];
     const msgScore = calculateMessageRiskScore(emptyMsgEvidence);
     expect(msgScore.score).toBe(0);
     expect(msgScore.level).toBe('SAFE');
@@ -44,7 +41,8 @@ describe('Edge Case Polish Suite (8 Required Robustness Tests)', () => {
 
   // 3. Unicode and Hindi text
   it('correctly handles Unicode, Hindi, and multilingual text in masking and security scans', () => {
-    const hindiMessage = 'कृपया अपना पासवर्ड और पैन ABCDE1234F साझा न करें: https://bank-secure-alert.xyz';
+    const hindiMessage =
+      'कृपया अपना पासवर्ड और पैन ABCDE1234F साझा न करें: https://bank-secure-alert.xyz';
     const maskResult = maskSensitiveData(hindiMessage);
 
     expect(maskResult.maskedText).toContain('[PAN_1]');
@@ -99,7 +97,7 @@ describe('Edge Case Polish Suite (8 Required Robustness Tests)', () => {
     expect(maskedText).not.toContain(secretApiKey);
     expect(maskedText).not.toContain('4532 0150 1234 5678');
     expect(maskedText).not.toContain('victim-confidential@secret-corp.internal');
-    expect(maskedText).toContain('[SECRET_1]');
+    expect(maskedText).toContain('[GOOGLE_KEY_1]');
     expect(maskedText).toContain('[CARD_1]');
     expect(maskedText).toContain('[EMAIL_1]');
   });

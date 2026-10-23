@@ -1,20 +1,26 @@
 import { z } from 'zod';
 
-export const messageAnalysisSchema = z.object({
-  text: z.string({ required_error: 'Text field is required' })
-    .min(1, 'Text cannot be empty')
-    .max(50000, 'Text exceeds maximum length of 50,000 characters'),
-  language: z.enum(['en', 'hi', 'mr']).default('en'),
-  clientMaskCounts: z.record(z.string(), z.number()).optional(),
-}).strict();
+export const messageAnalysisSchema = z
+  .object({
+    text: z
+      .string({ required_error: 'Text field is required' })
+      .min(1, 'Text cannot be empty')
+      .max(50000, 'Text exceeds maximum length of 50,000 characters'),
+    language: z.enum(['en', 'hi', 'mr']).default('en'),
+    clientMaskCounts: z.record(z.string(), z.number()).optional(),
+  })
+  .strict();
 
-export const codeAnalysisSchema = z.object({
-  code: z.string({ required_error: 'Code field is required' })
-    .min(1, 'Code cannot be empty')
-    .max(50000, 'Code exceeds maximum length of 50,000 characters'),
-  language: z.enum(['en', 'hi', 'mr']).default('en'),
-  clientMaskCounts: z.record(z.string(), z.number()).optional(),
-}).strict();
+export const codeAnalysisSchema = z
+  .object({
+    code: z
+      .string({ required_error: 'Code field is required' })
+      .min(1, 'Code cannot be empty')
+      .max(50000, 'Code exceeds maximum length of 50,000 characters'),
+    language: z.enum(['en', 'hi', 'mr']).default('en'),
+    clientMaskCounts: z.record(z.string(), z.number()).optional(),
+  })
+  .strict();
 
 /**
  * Express middleware generator for Zod schema validation

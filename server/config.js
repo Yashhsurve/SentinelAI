@@ -9,5 +9,5 @@ export const config = {
   nodeEnv: process.env.NODE_ENV || 'development',
   isDemoMode: !process.env.GEMINI_API_KEY,
   cacheTtlMs: 10 * 60 * 1000, // 10 minutes cache TTL
-  maxInputLength: 50000,      // Max characters allowed per request
+  maxInputLength: 50000, // Max characters allowed per request
 };

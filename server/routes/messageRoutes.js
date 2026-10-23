@@ -19,7 +19,12 @@ router.post('/analyze-message', validateBody(messageAnalysisSchema), async (req,
         ...cached,
         isCached: true,
         agentTrace: [
-          { step: 'CACHE', status: 'HIT', durationMs: 1, note: 'Retrieved instantaneous analysis from in-memory LRU cache' },
+          {
+            step: 'CACHE',
+            status: 'HIT',
+            durationMs: 1,
+            note: 'Retrieved instantaneous analysis from in-memory LRU cache',
+          },
           ...cached.agentTrace,
         ],
       });

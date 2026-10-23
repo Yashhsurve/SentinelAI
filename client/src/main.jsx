@@ -54,7 +54,8 @@ class ErrorBoundary extends React.Component {
               lineHeight: 1.5,
             }}
           >
-            SentinelAI encountered an unexpected display error. Your inspected code and messages remain securely in your browser.
+            SentinelAI encountered an unexpected display error. Your inspected code and messages
+            remain securely in your browser.
           </p>
           <button
             type="button"
@@ -83,7 +84,10 @@ class ErrorBoundary extends React.Component {
 // Apply theme synchronously before React renders to avoid flash
 try {
   const saved = localStorage.getItem('sentinel-theme');
-  const preferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  const preferred =
+    window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light';
   const theme = saved === 'dark' || saved === 'light' ? saved : preferred;
   document.documentElement.setAttribute('data-theme', theme);
 } catch {

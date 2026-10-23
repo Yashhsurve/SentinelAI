@@ -1,8 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import {
-  scanCodeSecrets,
-  calculateShannonEntropy,
-} from '../shared/detectors/codeSecretScanner.js';
+import { scanCodeSecrets, calculateShannonEntropy } from '../shared/detectors/codeSecretScanner.js';
 import { scanCodeVulnerabilities } from '../shared/detectors/codeVulnerabilityScanner.js';
 
 describe('Shannon Entropy Calculation', () => {

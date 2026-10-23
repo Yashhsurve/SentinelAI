@@ -8,7 +8,8 @@ const TACTICS = [
   {
     subtype: 'credential_request',
     severity: 'CRITICAL',
-    description: 'Direct request for high-security credentials (OTP, UPI PIN, CVV, password). Legitimate organizations never request these.',
+    description:
+      'Direct request for high-security credentials (OTP, UPI PIN, CVV, password). Legitimate organizations never request these.',
     patterns: [
       /\b(?:share|send|enter|provide|tell|verify)\s+(?:your\s+)?(?:otp|one[- ]time[- ]password|pin|upi[- ]pin|cvv|atm[- ]pin|password|net[- ]banking\s+password)\b/gi,
       /\b(?:otp|pin|cvv|password)\s+(?:share|bhejo|bataye|sanga|dya|kare|do)\b/gi,
@@ -20,7 +21,8 @@ const TACTICS = [
   {
     subtype: 'fear_threat',
     severity: 'CRITICAL',
-    description: 'Coercive threat of legal punishment, arrest, account freeze, or service disconnection designed to induce panic.',
+    description:
+      'Coercive threat of legal punishment, arrest, account freeze, or service disconnection designed to induce panic.',
     patterns: [
       /\b(?:account|sim|card|pan|kyc)\s+(?:will be|is|has been)?\s*(?:blocked|suspended|deactivated|frozen|terminated|cancelled)\b/gi,
       /\b(?:electricity|power|bill)\s+(?:will be\s+)?(?:disconnected|cut\s+off)\s+(?:tonight|today|at\s+\d+)\b/gi,
@@ -33,7 +35,8 @@ const TACTICS = [
   {
     subtype: 'authority_impersonation',
     severity: 'HIGH',
-    description: 'Impersonation of trusted regulatory, banking, or government authorities to exploit institutional trust.',
+    description:
+      'Impersonation of trusted regulatory, banking, or government authorities to exploit institutional trust.',
     patterns: [
       /\b(?:rbi|reserve\s+bank\s+of\s+india|income\s+tax\s+department|cbi|mumbai\s+police|cyber\s+crime\s+cell|trai|customs\s+department)\b/gi,
       /\b(?:sbi\s+manager|bank\s+manager|electricity\s+officer|govt\s+of\s+india|sarkari\s+yojana)\b/gi,
@@ -44,7 +47,8 @@ const TACTICS = [
   {
     subtype: 'urgency',
     severity: 'HIGH',
-    description: 'Artificial time pressure forcing victims to bypass critical reasoning before verification.',
+    description:
+      'Artificial time pressure forcing victims to bypass critical reasoning before verification.',
     patterns: [
       /\b(?:immediately|urgent(?:ly)?|within\s+(?:24|12|2|1)\s*hours?|expires\s+today|act\s+now|last\s+chance|final\s+notice)\b/gi,
       /\b(?:turant|jaldi|fauran|24\s+ghante\s+ke\s+andar|aaj\s+hi|aaj\s+rat\s+tak)\b/gi,
@@ -55,7 +59,8 @@ const TACTICS = [
   {
     subtype: 'reward_lottery_bait',
     severity: 'HIGH',
-    description: 'Fake financial windfall or grand prize bait designed to trigger impulsive compliance.',
+    description:
+      'Fake financial windfall or grand prize bait designed to trigger impulsive compliance.',
     patterns: [
       /\b(?:congratulations|you\s+(?:have\s+)?won|lottery\s+winner|kbc\s+lottery|bumper\s+prize|claim\s+(?:your\s+)?prize)\b/gi,
       /\b(?:won\s+(?:rs\.?|inr|\$|₹)?\s*[\d,]+(?:\s*(?:lakh|crore|thousand))?)\b/gi,
@@ -67,7 +72,8 @@ const TACTICS = [
   {
     subtype: 'payment_demand',
     severity: 'HIGH',
-    description: 'Demands for upfront fee, processing charges, deposit, or gift cards to "release" funds or prevent action.',
+    description:
+      'Demands for upfront fee, processing charges, deposit, or gift cards to "release" funds or prevent action.',
     patterns: [
       /\b(?:processing\s+fee|registration\s+charges?|delivery\s+fee|customs\s+clearance\s+fee|advance\s+payment)\b/gi,
       /\b(?:pay\s+rs\.?|transfer\s+to\s+upi|send\s+money\s+to|pay\s+via\s+google\s+play\s+recharge)\b/gi,

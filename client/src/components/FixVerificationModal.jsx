@@ -70,10 +70,25 @@ export default function FixVerificationModal({
   } = verificationData;
 
   return (
-    <div className="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="verify-modal-title">
+    <div
+      className="modal-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="verify-modal-title"
+    >
       <div className="modal-content" ref={modalRef}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
-          <h2 id="verify-modal-title" style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)' }}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginBottom: '14px',
+          }}
+        >
+          <h2
+            id="verify-modal-title"
+            style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)' }}
+          >
             Fix verification
           </h2>
           <button
@@ -110,22 +125,35 @@ export default function FixVerificationModal({
             <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '4px' }}>
               Original score
             </div>
-            <div style={{ fontSize: '24px', fontWeight: 600, color: 'var(--status-danger-text)', fontFamily: 'var(--font-mono)' }}>
+            <div
+              style={{
+                fontSize: '24px',
+                fontWeight: 600,
+                color: 'var(--status-danger-text)',
+                fontFamily: 'var(--font-mono)',
+              }}
+            >
               {original.score ?? 0}
             </div>
             <div style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
-              Grade: {original.grade} • {original.issuesCount} issue{original.issuesCount === 1 ? '' : 's'}
+              Grade: {original.grade} • {original.issuesCount} issue
+              {original.issuesCount === 1 ? '' : 's'}
             </div>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
+          <div
+            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}
+          >
             <Icon name="arrow-right" size={16} className="text-secondary" />
             <span
               style={{
                 fontFamily: 'var(--font-mono)',
                 fontSize: '13px',
                 fontWeight: 600,
-                color: scoreImprovement >= 0 ? 'var(--status-success-text)' : 'var(--status-danger-text)',
+                color:
+                  scoreImprovement >= 0
+                    ? 'var(--status-success-text)'
+                    : 'var(--status-danger-text)',
               }}
             >
               {scoreImprovement >= 0 ? `+${scoreImprovement}` : scoreImprovement} pts
@@ -136,7 +164,14 @@ export default function FixVerificationModal({
             <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '4px' }}>
               Remediated score
             </div>
-            <div style={{ fontSize: '24px', fontWeight: 600, color: 'var(--status-success-text)', fontFamily: 'var(--font-mono)' }}>
+            <div
+              style={{
+                fontSize: '24px',
+                fontWeight: 600,
+                color: 'var(--status-success-text)',
+                fontFamily: 'var(--font-mono)',
+              }}
+            >
               {fixed.score ?? 100}
             </div>
             <div style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
@@ -156,7 +191,11 @@ export default function FixVerificationModal({
             fontSize: '13px',
           }}
         >
-          <strong style={{ color: isResolved ? 'var(--status-success-text)' : 'var(--status-warning-text)' }}>
+          <strong
+            style={{
+              color: isResolved ? 'var(--status-success-text)' : 'var(--status-warning-text)',
+            }}
+          >
             {isResolved
               ? 'Verification passed: issue resolved.'
               : 'Partial remediation: other issues remain.'}
@@ -170,7 +209,14 @@ export default function FixVerificationModal({
 
         {/* Plain Diff with red / green tinted lines */}
         <div style={{ marginBottom: '16px' }}>
-          <div style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-secondary)', marginBottom: '6px' }}>
+          <div
+            style={{
+              fontSize: '13px',
+              fontWeight: 500,
+              color: 'var(--text-secondary)',
+              marginBottom: '6px',
+            }}
+          >
             Diff comparison
           </div>
           <div

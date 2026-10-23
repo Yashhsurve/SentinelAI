@@ -32,15 +32,43 @@ const TARGET_BRANDS = [
 
 // High-risk or frequently abused TLDs
 const SUSPICIOUS_TLDS = new Set([
-  'xyz', 'top', 'click', 'cam', 'work', 'link', 'surf', 'monster',
-  'fit', 'rest', 'buzz', 'loan', 'gq', 'cf', 'tk', 'ml', 'ga',
-  'cc', 'icu', 'vip', 'quest',
+  'xyz',
+  'top',
+  'click',
+  'cam',
+  'work',
+  'link',
+  'surf',
+  'monster',
+  'fit',
+  'rest',
+  'buzz',
+  'loan',
+  'gq',
+  'cf',
+  'tk',
+  'ml',
+  'ga',
+  'cc',
+  'icu',
+  'vip',
+  'quest',
 ]);
 
 // URL shortener services
 const SHORTENER_DOMAINS = new Set([
-  'bit.ly', 'tinyurl.com', 't.co', 'is.gd', 'cutt.ly', 'rb.gy',
-  'ow.ly', 'shorturl.at', 'bl.ink', 'buff.ly', 'rebrand.ly', 't.ly',
+  'bit.ly',
+  'tinyurl.com',
+  't.co',
+  'is.gd',
+  'cutt.ly',
+  'rb.gy',
+  'ow.ly',
+  'shorturl.at',
+  'bl.ink',
+  'buff.ly',
+  'rebrand.ly',
+  't.ly',
 ]);
 
 /**
@@ -50,9 +78,7 @@ export function levenshteinDistance(a, b) {
   if (a.length === 0) return b.length;
   if (b.length === 0) return a.length;
 
-  const matrix = Array.from({ length: a.length + 1 }, () =>
-    new Array(b.length + 1).fill(0)
-  );
+  const matrix = Array.from({ length: a.length + 1 }, () => new Array(b.length + 1).fill(0));
 
   for (let i = 0; i <= a.length; i++) matrix[i][0] = i;
   for (let j = 0; j <= b.length; j++) matrix[0][j] = j;
@@ -61,8 +87,8 @@ export function levenshteinDistance(a, b) {
     for (let j = 1; j <= b.length; j++) {
       const cost = a[i - 1] === b[j - 1] ? 0 : 1;
       matrix[i][j] = Math.min(
-        matrix[i - 1][j] + 1,      // deletion
-        matrix[i][j - 1] + 1,      // insertion
+        matrix[i - 1][j] + 1, // deletion
+        matrix[i][j - 1] + 1, // insertion
         matrix[i - 1][j - 1] + cost // substitution
       );
     }
@@ -113,7 +139,10 @@ export function detectUrlThreats(text) {
     ) {
       try {
         const actualHost = new URL(actualUrl).hostname.toLowerCase();
-        const textHost = linkText.replace(/^https?:\/\//, '').split('/')[0].toLowerCase();
+        const textHost = linkText
+          .replace(/^https?:\/\//, '')
+          .split('/')[0]
+          .toLowerCase();
         if (actualHost !== textHost && !actualHost.endsWith('.' + textHost)) {
           evidence.push({
             id: `URL-${String(counter++).padStart(2, '0')}`,
@@ -133,7 +162,8 @@ export function detectUrlThreats(text) {
 
   // 2. Extract standard URLs and IP addresses
   // Handles http, https, and bare domains with paths or query params
-  const urlRegex = /(?:https?:\/\/|www\.)[^\s<>"'()[\]{}]+|\b[a-zA-Z0-9-]+\.(?:com|in|org|net|xyz|top|click|co|io|app|live|info|me|store|biz|gov|edu)(?:\/[^\s<>"'()[\]{}]*)?/gi;
+  const urlRegex =
+    /(?:https?:\/\/|www\.)[^\s<>"'()[\]{}]+|\b[a-zA-Z0-9-]+\.(?:com|in|org|net|xyz|top|click|co|io|app|live|info|me|store|biz|gov|edu)(?:\/[^\s<>"'()[\]{}]*)?/gi;
 
   let match;
   const processedSpans = new Set();
@@ -250,7 +280,11 @@ export function detectUrlThreats(text) {
       const dist = levenshteinDistance(sld, brand);
       const normDist = levenshteinDistance(normalizeLeetspeak(sld), brand);
 
-      if ((dist === 1 || dist === 2 || normDist === 0 || normDist === 1) && sld !== brand && !isOfficialDomain) {
+      if (
+        (dist === 1 || dist === 2 || normDist === 0 || normDist === 1) &&
+        sld !== brand &&
+        !isOfficialDomain
+      ) {
         evidence.push({
           id: `URL-${String(counter++).padStart(2, '0')}`,
           type: 'url_analysis',

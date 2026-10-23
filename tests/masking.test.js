@@ -3,7 +3,8 @@ import { maskSensitiveData } from '../shared/masking.js';
 
 describe('Privacy Masking Engine', () => {
   it('masks email addresses with [EMAIL_X] placeholders', () => {
-    const input = 'Contact our support officer at alert@fraud-sbi.com or admin@bank.in immediately.';
+    const input =
+      'Contact our support officer at alert@fraud-sbi.com or admin@bank.in immediately.';
     const result = maskSensitiveData(input);
 
     expect(result.maskedText).toContain('[EMAIL_1]');
@@ -49,7 +50,8 @@ describe('Privacy Masking Engine', () => {
   });
 
   it('masks AWS access keys and Google API keys', () => {
-    const input = 'const aws = "AKIAIOSFODNN7EXAMPLE"; const gKey = "AIzaSyD-1234567890abcdefghijklmnopqrstuv";';
+    const input =
+      'const aws = "AKIAIOSFODNN7EXAMPLE"; const gKey = "AIzaSyD-1234567890abcdefghijklmnopqrstuv";';
     const result = maskSensitiveData(input);
 
     expect(result.maskedText).toContain('[AWS_KEY_1]');

@@ -21,20 +21,20 @@ export function generateMessageFallback(maskedText, evidenceList, riskScoreObj, 
     explanation = isScam
       ? '[AI अनुपलब्ध - नियम-आधारित परिणाम] यह संदेश एक उच्च-जोखिम वाला धोखाधड़ी (Scam) प्रतीत होता है। इसमें संदिग्ध लिंक, जल्दबाजी का दबाव या संवेदनशील क्रेडेंशियल (OTP/PIN) मांगने के स्पष्ट संकेत पाए गए हैं।'
       : isSuspicious
-      ? '[AI अनुपलब्ध - नियम-आधारित परिणाम] इस संदेश में कुछ संदिग्ध तत्व हैं। कृपया किसी भी लिंक पर क्लिक करने या व्यक्तिगत जानकारी साझा करने से पहले सावधानी बरतें।'
-      : '[AI अनुपलब्ध - नियम-आधारित परिणाम] इस संदेश में कोई स्पष्ट फ़िशिंग या धोखाधड़ी के संकेत नहीं मिले हैं।';
+        ? '[AI अनुपलब्ध - नियम-आधारित परिणाम] इस संदेश में कुछ संदिग्ध तत्व हैं। कृपया किसी भी लिंक पर क्लिक करने या व्यक्तिगत जानकारी साझा करने से पहले सावधानी बरतें।'
+        : '[AI अनुपलब्ध - नियम-आधारित परिणाम] इस संदेश में कोई स्पष्ट फ़िशिंग या धोखाधड़ी के संकेत नहीं मिले हैं।';
   } else if (language === 'mr') {
     explanation = isScam
       ? '[AI अनुपलब्ध - नियम-आधारित निकाल] हा संदेश एक अतिधोकादायक फसवणूक (Scam) असल्याचे निष्पन्न झाले आहे. यामध्ये संशयास्पद लिंक्स किंवा गोपनीय माहिती (OTP/PIN) मागण्याचे गंभीर संकेत आहेत.'
       : isSuspicious
-      ? '[AI अनुपलब्ध - नियम-आधारित निकाल] या संदेशामध्ये संशयास्पद घटक आढळले आहेत. कोणत्याही लिंकवर क्लिक करण्यापूर्वी खात्री करा.'
-      : '[AI अनुपलब्ध - नियम-आधारित निकाल] या संदेशात कोणतीही फसवणूक किंवा सायबर धोक्याचे संकेत आढळले नाहीत.';
+        ? '[AI अनुपलब्ध - नियम-आधारित निकाल] या संदेशामध्ये संशयास्पद घटक आढळले आहेत. कोणत्याही लिंकवर क्लिक करण्यापूर्वी खात्री करा.'
+        : '[AI अनुपलब्ध - नियम-आधारित निकाल] या संदेशात कोणतीही फसवणूक किंवा सायबर धोक्याचे संकेत आढळले नाहीत.';
   } else {
     explanation = isScam
       ? '[AI unavailable - rule-based result] This message exhibits multiple high-risk indicators characteristic of a targeted scam. It employs coercive psychological tactics and unverified links designed to harvest credentials or funds.'
       : isSuspicious
-      ? '[AI unavailable - rule-based result] This message contains suspicious elements that warrant caution. Avoid clicking unverified links or sharing personal information.'
-      : '[AI unavailable - rule-based result] No deterministic indicators of phishing, coercion, or credential theft were identified in this message.';
+        ? '[AI unavailable - rule-based result] This message contains suspicious elements that warrant caution. Avoid clicking unverified links or sharing personal information.'
+        : '[AI unavailable - rule-based result] No deterministic indicators of phishing, coercion, or credential theft were identified in this message.';
   }
 
   // Build findings mapped to evidence IDs
@@ -85,7 +85,8 @@ export function generateMessageFallback(maskedText, evidenceList, riskScoreObj, 
  */
 export function generateCodeFallback(maskedCode, evidenceList, securityScoreObj) {
   const findings = evidenceList.map((ev) => {
-    let suggestedFix = ev.fixSuggestion || '// Security remediation required for line ' + (ev.lineNumber || 1);
+    let suggestedFix =
+      ev.fixSuggestion || '// Security remediation required for line ' + (ev.lineNumber || 1);
 
     if (ev.subtype === 'google_api_key' || ev.subtype === 'aws_access_key') {
       suggestedFix = `// Load secret securely from environment variable\nconst API_KEY = process.env.API_KEY || '';`;

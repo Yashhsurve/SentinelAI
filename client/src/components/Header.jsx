@@ -1,7 +1,14 @@
 import React from 'react';
 import Icon from './Icon.jsx';
 
-export default function Header({ health, onOpenHistory, onOpenReport, hasResults, theme, onToggleTheme }) {
+export default function Header({
+  health,
+  onOpenHistory,
+  onOpenReport,
+  hasResults,
+  theme,
+  onToggleTheme,
+}) {
   const isDemo = health?.mode?.includes('demo') || health?.mode?.includes('client-only');
 
   return (
@@ -18,14 +25,15 @@ export default function Header({ health, onOpenHistory, onOpenReport, hasResults
           />
           <div>
             <h1 className="brand-title">SentinelAI</h1>
-            <p className="brand-tagline">
-              Security investigator for messages and code
-            </p>
+            <p className="brand-tagline">Security investigator for messages and code</p>
           </div>
         </div>
 
         <div className="header-controls">
-          <div className="status-indicator" title={isDemo ? 'Running in rule-based mode' : 'Connected to Gemini API'}>
+          <div
+            className="status-indicator"
+            title={isDemo ? 'Running in rule-based mode' : 'Connected to Gemini API'}
+          >
             <span className={`status-dot ${isDemo ? 'amber' : 'green'}`} aria-hidden="true" />
             <span>{isDemo ? 'Rule-based mode' : 'Gemini connected'}</span>
           </div>
@@ -66,4 +74,3 @@ export default function Header({ health, onOpenHistory, onOpenReport, hasResults
     </header>
   );
 }
-

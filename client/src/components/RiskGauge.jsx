@@ -7,7 +7,6 @@ export default function RiskGauge({
   grade = null,
   verdict = 'SAFE',
 }) {
-
   // Determine colors and verdict styles
   let statusClass = 'success';
   let statusLabel = 'Looks safe';
@@ -58,9 +57,7 @@ export default function RiskGauge({
         <h2 className="card-title">
           {mode === 'risk' ? 'Risk assessment' : 'Security health score'}
         </h2>
-        <span className={`status-chip ${statusClass}`}>
-          {statusLabel}
-        </span>
+        <span className={`status-chip ${statusClass}`}>{statusLabel}</span>
       </div>
 
       {/* Accessible Compact Meter */}
@@ -68,9 +65,7 @@ export default function RiskGauge({
         <div className="meter-header">
           <span className="meter-number">{score}</span>
           <span className="meter-total">/100</span>
-          {grade && (
-            <span className="meter-label">Grade {grade}</span>
-          )}
+          {grade && <span className="meter-label">Grade {grade}</span>}
         </div>
 
         <div
@@ -91,7 +86,14 @@ export default function RiskGauge({
       {/* Clean Two-Column Breakdown Table */}
       {breakdown && Object.keys(breakdown).length > 0 && (
         <div style={{ marginTop: '16px' }}>
-          <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-secondary)', marginBottom: '4px' }}>
+          <div
+            style={{
+              fontSize: '14px',
+              fontWeight: 500,
+              color: 'var(--text-secondary)',
+              marginBottom: '4px',
+            }}
+          >
             Score breakdown
           </div>
           <div className="breakdown-table-container">
