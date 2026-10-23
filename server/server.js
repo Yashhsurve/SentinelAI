@@ -71,6 +71,20 @@ app.use('/api', healthRoutes);
 app.use('/api', messageRoutes);
 app.use('/api', codeRoutes);
 
+// 6. Serve static production client build if available (e.g. Google Cloud Run)
+import path from 'path';
+import { fileURLToPath } from 'url';
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const distPath = path.join(__dirname, '../dist');
+app.use(express.static(distPath));
+
+app.get('*', (req, res, next) => {
+  if (req.path.startsWith('/api')) return next();
+  res.sendFile(path.join(distPath, 'index.html'), (err) => {
+    if (err) next();
+  });
+});
+
 // 6. Generic Error Handling Middleware (Never leak stack traces)
 app.use((err, req, res, next) => {
   logger.error('Unhandled server exception', err);
