@@ -19,6 +19,32 @@ export default function App() {
   const [activeReportData, setActiveReportData] = useState(null);
   const [announcement, setAnnouncement] = useState('');
 
+  // Theme State (Dark / Light)
+  const [theme, setTheme] = useState(() => {
+    try {
+      const saved = localStorage.getItem('sentinel-theme');
+      if (saved === 'dark' || saved === 'light') return saved;
+    } catch {}
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light';
+  });
+
+  const handleToggleTheme = () => {
+    const nextTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(nextTheme);
+    document.documentElement.setAttribute('data-theme', nextTheme);
+    try {
+      localStorage.setItem('sentinel-theme', nextTheme);
+    } catch {}
+    const metaThemes = document.querySelectorAll('meta[name="theme-color"]');
+    metaThemes.forEach((meta) => {
+      if (!meta.getAttribute('media')) {
+        meta.setAttribute('content', nextTheme === 'dark' ? '#0E1116' : '#F6F7F9');
+      }
+    });
+  };
+
   // Sample data passed into active module
   const [messageInput, setMessageInput] = useState('');
   const [codeInput, setCodeInput] = useState('');
@@ -126,6 +152,8 @@ export default function App() {
           onOpenHistory={() => setIsHistoryOpen(true)}
           onOpenReport={() => setIsReportOpen(true)}
           hasResults={Boolean(activeReportData)}
+          theme={theme}
+          onToggleTheme={handleToggleTheme}
         />
 
         {/* Quick Example Samples Bar */}
@@ -184,8 +212,20 @@ export default function App() {
 
         {/* Quiet Footer with Tagline and Privacy Guarantee */}
         <footer className="app-footer" role="contentinfo">
-          <div>AI proposes, code verifies, nothing leaves your browser unmasked.</div>
-          <div style={{ color: 'var(--text-muted)', fontSize: '12px' }}>
+          <div className="footer-brand">
+            <img
+              src="/logo.png"
+              alt=""
+              width="20"
+              height="20"
+              decoding="async"
+              className="footer-logo-img"
+            />
+            <strong>SentinelAI</strong>
+            <span className="footer-divider">•</span>
+            <span>AI proposes, code verifies, nothing leaves your browser unmasked.</span>
+          </div>
+          <div style={{ color: 'var(--text-muted)', fontSize: '13px' }}>
             Client-side privacy: Sensitive tokens, credentials, and numbers are masked in your browser prior to inspection.
           </div>
         </footer>
