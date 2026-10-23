@@ -32,6 +32,7 @@ export default function App() {
 
   const handleToggleTheme = () => {
     const nextTheme = theme === 'dark' ? 'light' : 'dark';
+    const nextColor = nextTheme === 'dark' ? '#0E1116' : '#F6F7F9';
     setTheme(nextTheme);
     document.documentElement.setAttribute('data-theme', nextTheme);
     try {
@@ -39,9 +40,8 @@ export default function App() {
     } catch {}
     const metaThemes = document.querySelectorAll('meta[name="theme-color"]');
     metaThemes.forEach((meta) => {
-      if (!meta.getAttribute('media')) {
-        meta.setAttribute('content', nextTheme === 'dark' ? '#0E1116' : '#F6F7F9');
-      }
+      meta.setAttribute('content', nextColor);
+      meta.removeAttribute('media');
     });
   };
 

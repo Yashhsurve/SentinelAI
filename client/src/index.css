@@ -178,7 +178,7 @@ h1, h2, h3, h4, h5, h6 {
 
 @media (max-width: 900px) {
   .app-container {
-    padding: 20px 20px 48px 20px;
+    padding: 24px 24px 48px 24px;
   }
 }
 
@@ -408,9 +408,10 @@ h1, h2, h3, h4, h5, h6 {
   }
   .sample-link-btn {
     scroll-snap-align: start;
-    min-height: 36px;
+    min-height: 44px;
     display: inline-flex;
     align-items: center;
+    padding: 6px 10px;
   }
 }
 
